@@ -1,0 +1,61 @@
+/* Header component styles */
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2c3e50;
+    color: white;
+    padding: 12px 24px;
+    width: 100%;
+    position: relative; /* Fixed positioning */
+    top: 0; /* Stick to the top */
+    left: 0;
+    z-index: 1001; /* Higher z-index to stay on top */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Add shadow for separation */
+}
+
+.top-left {
+    display: flex;
+    gap: 24px;
+}
+
+.top-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.top-link:hover {
+    color: #3498db;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.slash {
+    margin: 0 5px;
+    color: #ecf0f1;
+}
+
+/* Responsive styles for header component */
+@media (max-width: 768px) {
+    .top-row {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        text-align: center;
+    }
+    
+    .top-left {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .top-link {
+        padding: 4px 8px;
+        font-size: 0.9rem;
+    }
+}

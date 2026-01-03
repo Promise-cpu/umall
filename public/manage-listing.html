@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Business - Cell Noun</title>
+    <link rel="stylesheet" href="CSS/header-component.css">
+    <link rel="stylesheet" href="CSS/manage-listing.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Main container -->
+    <div class="container">
+        
+        <!-- Header -->
+        <header class="header">
+            <div id="header-component"></div>
+        </header>
+        
+        <!-- Back button -->
+        <div class="back-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Marketplace
+            </a>
+        </div>
+        
+        <!-- Main content -->
+        <main class="manage-listing-content">
+            <div class="content-wrapper">
+                <!-- Page header -->
+                <div class="page-header">
+                    <h1><i class="fas fa-store"></i> My Business</h1>
+                    <p>Manage your business listing on the marketplace</p>
+                </div>
+                
+                <!-- Business Listing Section -->
+                <div id="business-section">
+                    <!-- No Business Message (shown by default) -->
+                    <div id="no-business-message" class="no-listings">
+                        <i class="fas fa-store-alt"></i>
+                        <h3>No Business Listing Yet</h3>
+                        <p>You haven't created a business listing yet. Create one to showcase your business on the marketplace.</p>
+                        <a href="listings.html" class="btn-add-listing">
+                            <i class="fas fa-plus-circle"></i> Create Business Listing
+                        </a>
+                    </div>
+                    
+                    <!-- Business Card (hidden by default) -->
+                    <div id="business-card" class="business-card" style="display: none;">
+                        <div class="business-header">
+                            <div class="business-image">
+                                <div class="img-placeholder">
+                                    <i class="fas fa-store"></i>
+                                </div>
+                                <span class="status-badge active">Active</span>
+                            </div>
+                            <div class="business-actions">
+                                <button class="action-btn edit-btn" id="edit-business-btn">
+                                    <i class="fas fa-edit"></i> Edit Business
+                                </button>
+                                <button class="action-btn delete-btn" id="delete-business-btn">
+                                    <i class="fas fa-trash"></i> Remove Business
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="business-info">
+                            <h3 id="business-name">Business Name</h3>
+                            
+                            <div class="business-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-tag"></i>
+                                    <span id="business-category">Category</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span id="business-location">Location</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span id="business-hours">Business Hours</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span id="business-contact">Contact</span>
+                                </div>
+                            </div>
+                            
+                            <div class="business-description">
+                                <h4>About the Business</h4>
+                                <p id="business-description-text">Business description will appear here.</p>
+                            </div>
+                            
+                            <div class="business-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Listed: <span id="business-date">Date</span></span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Status: <span id="business-status">Active</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>U-MALL Marketplace &copy; 2025 | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </footer>
+        
+        <!-- Edit Business Modal -->
+        <div id="edit-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-edit"></i> Edit Business</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-business-form">
+                        <div class="form-group">
+                            <label for="edit-business-name">Business Name *</label>
+                            <input type="text" id="edit-business-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-business-category">Category *</label>
+                            <select id="edit-business-category" required>
+                                <option value="">Select Category</option>
+                                <option value="electronics">Electronics & Gadgets</option>
+                                <option value="food">Food & Snacks</option>
+                                <option value="books">Textbooks & Stationery</option>
+                                <option value="dorm">Dorm Essentials</option>
+                                <option value="services">Student Services</option>
+                                <option value="lab">Lab Equipment</option>
+                                <option value="accommodation">Accommodation</option>
+                                <option value="fashion">Fashion & Clothing</option>
+                                <option value="health">Health & Wellness</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-business-campus">Campus *</label>
+                            <select id="edit-business-campus" required>
+                                <option value="">Select Campus</option>
+                                <option value="uli">ULI Campus</option>
+                                <option value="awka">Awka Campus</option>
+                                <option value="igbariam">Igbariam Campus</option>
+                                <option value="online">Online Services</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-business-location">Location Details *</label>
+                            <input type="text" id="edit-business-location" required placeholder="e.g., Block A, Room 12, Main Building">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-business-description">Business Description *</label>
+                            <textarea id="edit-business-description" rows="4" required placeholder="Describe your business, products, or services..."></textarea>
+                            <small class="form-hint">Tell customers what makes your business special</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-business-hours">Business Hours</label>
+                            <input type="text" id="edit-business-hours" placeholder="e.g., Mon-Fri: 8AM-6PM, Sat: 10AM-4PM">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-business-contact">Contact Information *</label>
+                            <input type="text" id="edit-business-contact" required placeholder="Phone number or email address">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-cancel close-modal">Cancel</button>
+                            <button type="submit" class="btn-save">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Delete Confirmation Modal -->
+        <div id="delete-modal" class="modal">
+            <div class="modal-content delete-modal">
+                <div class="modal-header">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Remove Business</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to remove your business listing? This action cannot be undone.</p>
+                    <p><strong id="delete-business-name">[Business Name]</strong></p>
+                    <p class="warning-text">Your business will be removed from the marketplace immediately.</p>
+                    
+                    <div class="delete-actions">
+                        <button class="btn-cancel close-modal">Cancel</button>
+                        <button id="confirm-delete" class="btn-delete">Remove Business</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Success Modal -->
+        <div id="success-modal" class="modal">
+            <div class="modal-content success-modal">
+                <div class="modal-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Success!</h3>
+                <p id="success-message">Your changes have been saved successfully.</p>
+                <button class="btn-close-modal">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript to load header component -->
+    <script>
+        // Load header component
+        function loadHeader() {
+            fetch('header-component.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-component').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading header component:', error);
+                    document.getElementById('header-component').innerHTML = `
+                        <div class="top-row">
+                            <div class="top-left">
+                                <a href="index.html" class="top-link">Home</a>
+                                <a href="profile.html" class="top-link">Profile</a>
+                                <a href="manage-listing.html" class="top-link">My Business</a>
+                                <a href="#" class="top-link">Safety Tips</a>
+                                <a href="#" class="top-link">Help / Support</a>
+                            </div>
+                            <div class="top-right">
+                                <a href="sign.html#signin-page" class="top-link">Login</a>
+                                <span class="slash">/</span>
+                                <a href="sign.html#signup-page" class="top-link">Register</a>
+                            </div>
+                        </div>
+                    `;
+                });
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadHeader);
+    </script>
+    
+    <script src="JS/manage-listing.js"></script>
+</body>
+</html>

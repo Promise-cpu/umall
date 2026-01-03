@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cell Noun - Campus Marketplace</title>
+    <link rel="stylesheet" href="CSS/header-component.css">
+    <link rel="stylesheet" href="CSS/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header will be inserted here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main container -->
+    <div class="container">
+        
+        <!-- Upper column with two rows -->
+        <header class="header">
+            <!-- Header component will be loaded here -->
+            <div id="header-component"></div>
+            
+            <!-- Second row with milky/cream background -->
+            <div class="second-row">
+                <div class="menu-icon-container">
+                    <button id="menu-toggle" class="menu-toggle" aria-label="Toggle menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <div class="search-container">
+                    <div class="search-bar">
+                        <input type="text" id="search-input" placeholder="Search for products, services, textbooks...">
+                        <button id="search-button" class="search-button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="sell-now-tab">
+                    <a href="sign.html#signin-form" class="sell-link">Sell Now</a>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Side menu panel (hidden by default) -->
+        <nav id="side-menu" class="side-menu">
+            <div class="menu-header">
+                <h2>Filter by Campus</h2>
+                <button id="close-menu" class="close-menu" aria-label="Close menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="campus-filter">
+                <div class="filter-header">
+                    <i class="fas fa-university"></i>
+                    <h3>Select Campus</h3>
+                </div>
+                <ul class="campus-list">
+                    <li class="campus-item" data-campus="all">
+                        <i class="fas fa-globe"></i>
+                        <span>All Campuses</span>
+                        <span class="campus-count">(45)</span>
+                    </li>
+                    <li class="campus-item active" data-campus="uli">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>ULI Campus</span>
+                        <span class="campus-count">(18)</span>
+                    </li>
+                    <li class="campus-item" data-campus="awka">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Awka Campus</span>
+                        <span class="campus-count">(15)</span>
+                    </li>
+                    <li class="campus-item" data-campus="igbariam">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Igbariam Campus</span>
+                        <span class="campus-count">(12)</span>
+                    </li>
+                    <li class="campus-item" data-campus="online">
+                        <i class="fas fa-laptop"></i>
+                        <span>Online Services</span>
+                        <span class="campus-count">(25)</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="category-section">
+                <div class="filter-header">
+                    <i class="fas fa-list"></i>
+                    <h3>Categories</h3>
+                </div>
+                <ul class="menu-list">
+                    <li class="menu-item">
+                        <a href="#">
+                            <i class="fas fa-bed"></i>
+                            Dorm and Room Materials
+                            <span class="category-count">(23)</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#">
+                            <i class="fas fa-utensils"></i>
+                            Food and Snacks
+                            <span class="category-count">(31)</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#">
+                            <i class="fas fa-flask"></i>
+                            Medical/Laboratory Equipment
+                            <span class="category-count">(12)</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#">
+                            <i class="fas fa-user-graduate"></i>
+                            Student Services
+                            <span class="category-count">(28)</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#">
+                            <i class="fas fa-book"></i>
+                            Textbooks for Sale
+                            <span class="campus-count">(42)</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#">
+                            <i class="fas fa-hotel"></i>
+                            Lodges and Accommodation
+                            <span class="category-count">(19)</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="menu-footer">
+                <p>© 2023 Cell Noun. All rights reserved.</p>
+            </div>
+        </nav>
+        
+        <!-- Overlay for menu background (hidden by default) -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- Main content area with business cards -->
+        <main class="main-content">
+            <div class="content-wrapper">
+
+                <!-- Campus filter chips -->
+              
+                        
+                       
+                    </div>
+                    <div class="campus-chips-container">
+                        <span class="chip active" data-campus="uli">ULI</span>
+                        <span class="chip" data-campus="awka">Awka</span>
+                        <span class="chip" data-campus="igbariam">Igbariam</span>
+                        <span class="chip" data-campus="online">Online</span>
+                        <span class="chip" data-campus="all">All Campuses</span>
+                    </div>
+                </div>
+                
+                <!-- Business cards grid -->
+                <section class="business-cards-section">
+                    <h2 class="section-title">Businesses in ULI Campus</h2>
+                    <p class="section-subtitle">Discover local businesses and services near you</p>
+                    
+                    <div class="business-cards-grid">
+                        <!-- Business Card 1 -->
+                        <a href="display.html?id=1" class="business-card" data-campus="uli">
+                            <div class="business-image">
+                                <div class="image-placeholder">
+                                    <i class="fas fa-store"></i>
+                                </div>
+                                <div class="campus-badge">
+                                    <i class="fas fa-map-marker-alt"></i> ULI
+                                </div>
+                            </div>
+                            <div class="business-info">
+                                <h3 class="business-name">Tech Gadgets Hub</h3>
+                                <div class="business-location">
+                                    <i class="fas fa-map-pin"></i>
+                                    <span>Block A, Room 12, Main Building</span>
+                                </div>
+                                <div class="business-category">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Electronics & Gadgets</span>
+                                </div>
+                                <div class="business-hours">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Mon-Fri: 8AM - 6PM</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Business Card 2 -->
+                        <a href="display.html?id=2" class="business-card" data-campus="uli">
+                            <div class="business-image">
+                                <div class="image-placeholder food">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <div class="campus-badge">
+                                    <i class="fas fa-map-marker-alt"></i> ULI
+                                </div>
+                            </div>
+                            <div class="business-info">
+                                <h3 class="business-name">Student Bites Cafe</h3>
+                                <div class="business-location">
+                                    <i class="fas fa-map-pin"></i>
+                                    <span>Food Court, Student Center</span>
+                                </div>
+                                <div class="business-category">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Food & Snacks</span>
+                                </div>
+                                <div class="business-hours">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Daily: 7AM - 10PM</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Business Card 3 -->
+                        <a href="display.html?id=3" class="business-card" data-campus="awka">
+                            <div class="business-image">
+                                <div class="image-placeholder books">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="campus-badge">
+                                    <i class="fas fa-map-marker-alt"></i> AWKA
+                                </div>
+                            </div>
+                            <div class="business-info">
+                                <h3 class="business-name">Scholar's Bookstore</h3>
+                                <div class="business-location">
+                                    <i class="fas fa-map-pin"></i>
+                                    <span>Main Library Building</span>
+                                </div>
+                                <div class="business-category">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Textbooks & Stationery</span>
+                                </div>
+                                <div class="business-hours">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Mon-Sat: 9AM - 5PM</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Business Card 4 -->
+                        <a href="display.html?id=4" class="business-card" data-campus="igbariam">
+                            <div class="business-image">
+                                <div class="image-placeholder dorm">
+                                    <i class="fas fa-bed"></i>
+                                </div>
+                                <div class="campus-badge">
+                                    <i class="fas fa-map-marker-alt"></i> IGBARIAM
+                                </div>
+                            </div>
+                            <div class="business-info">
+                                <h3 class="business-name">Campus Comfort Store</h3>
+                                <div class="business-location">
+                                    <i class="fas fa-map-pin"></i>
+                                    <span>Dormitory Block 3</span>
+                                </div>
+                                <div class="business-category">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Dorm Essentials</span>
+                                </div>
+                                <div class="business-hours">
+                                    <i class="fas fa-clock"></i>
+                                    <span>24/7</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Business Card 5 -->
+                        <a href="display.html?id=5" class="business-card" data-campus="online">
+                            <div class="business-image">
+                                <div class="image-placeholder online">
+                                    <i class="fas fa-laptop"></i>
+                                </div>
+                                <div class="campus-badge">
+                                    <i class="fas fa-laptop"></i> ONLINE
+                                </div>
+                            </div>
+                            <div class="business-info">
+                                <h3 class="business-name">Campus Tutoring Services</h3>
+                                <div class="business-location">
+                                    <i class="fas fa-map-pin"></i>
+                                    <span>Virtual Sessions</span>
+                                </div>
+                                <div class="business-category">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Student Services</span>
+                                </div>
+                                <div class="business-hours">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Flexible Hours</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Business Card 6 -->
+                        <a href="display.html?id=6" class="business-card" data-campus="uli">
+                            <div class="business-image">
+                                <div class="image-placeholder lab">
+                                    <i class="fas fa-flask"></i>
+                                </div>
+                                <div class="campus-badge">
+                                    <i class="fas fa-map-marker-alt"></i> ULI
+                                </div>
+                            </div>
+                            <div class="business-info">
+                                <h3 class="business-name">Lab Equipment Rentals</h3>
+                                <div class="business-location">
+                                    <i class="fas fa-map-pin"></i>
+                                    <span>Science Building, Room 205</span>
+                                </div>
+                                <div class="business-category">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Lab Equipment</span>
+                                </div>
+                                <div class="business-hours">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Mon-Fri: 10AM - 4PM</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+                
+                <!-- No results message (hidden by default) -->
+                <div id="no-results" class="no-results" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <h3>No businesses found</h3>
+                    <p>Try selecting a different campus or search term</p>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>U-MALL Marketplace &copy; 2025 | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </footer>
+    </div>
+
+    <!-- JavaScript to load header component -->
+    <script>
+        // Load header component
+        function loadHeader() {
+            fetch('header-component.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-component').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading header component:', error);
+                    // Fallback header in case fetch fails
+                    document.getElementById('header-component').innerHTML = `
+                        <div class="top-row">
+                            <div class="top-left">
+                                <a href="#" class="top-link">Safety Tips</a>
+                                <a href="#" class="top-link">Help / Support</a>
+                            </div>
+                            <div class="top-right">
+                                <a href="sign.html#signin-form" class="top-link">Login</a>
+                                <span class="slash">/</span>
+                                <a href="sign.html#signup-form" class="top-link">Register</a>
+                            </div>
+                        </div>
+                    `;
+                });
+        }
+        
+        // Load header when DOM is ready
+        document.addEventListener('DOMContentLoaded', loadHeader);
+    </script>
+    
+    <script src="JS/index.js"></script>
+</body>
+</html>

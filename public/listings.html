@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Your Business - U-Mall</title>
+    <link rel="stylesheet" href="CSS/listings.css">
+    <link rel="stylesheet" href="CSS/header-component.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div id="header-component"></div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="listings-container">
+        <!-- Main Form Container -->
+        <div class="form-container">
+            <form id="listingForm" class="listing-form">
+                <!-- Business Information Section -->
+                <div class="form-section">
+                    <h2><i class="fas fa-info-circle"></i> Business Information</h2>
+                    
+                    <div class="form-group required">
+                        <label for="businessName">Business Name</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-store-alt"></i>
+                            <input type="text" id="businessName" name="businessName" placeholder="Enter your business name" required maxlength="100">
+                        </div>
+                        <div class="error-message" id="businessName-error"></div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label for="businessDescription">Business Description</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-align-left"></i>
+                            <textarea id="businessDescription" name="businessDescription" placeholder="Describe your business, products, or services" rows="4" required maxlength="500"></textarea>
+                        </div>
+                        <div class="char-count">
+                            <span id="desc-char-count">0</span>/500 characters
+                        </div>
+                        <div class="error-message" id="businessDescription-error"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half-width required">
+                            <label for="businessCategory">Category</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-tags"></i>
+                                <select id="businessCategory" name="businessCategory" required>
+                                    <option value="" disabled selected>Select a category</option>
+                                    <option value="electronics">Electronics & Gadgets</option>
+                                    <option value="food">Food & Snacks</option>
+                                    <option value="books">Textbooks & Stationery</option>
+                                    <option value="dorm">Dorm Essentials</option>
+                                    <option value="services">Student Services</option>
+                                    <option value="lab">Lab Equipment</option>
+                                    <option value="accommodation">Accommodation</option>
+                                    <option value="fashion">Fashion & Clothing</option>
+                                    <option value="health">Health & Wellness</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="error-message" id="businessCategory-error"></div>
+                        </div>
+
+                        <div class="form-group half-width required">
+                            <label for="campusLocation">Campus Location</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <select id="campusLocation" name="campusLocation" required>
+                                    <option value="" disabled selected>Select campus</option>
+                                    <option value="uli">ULI Campus</option>
+                                    <option value="awka">Awka Campus</option>
+                                    <option value="igbariam">Igbariam Campus</option>
+                                    <option value="online">Online Services</option>
+                                </select>
+                            </div>
+                            <div class="error-message" id="campusLocation-error"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information Section -->
+                <div class="form-section">
+                    <h2><i class="fas fa-address-book"></i> Contact Information</h2>
+                    
+                    <div class="form-group required">
+                        <label for="contactLink">Contact Link</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-link"></i>
+                            <input type="url" id="contactLink" name="contactLink" placeholder="https://wa.me/234XXXXXXXXXX or https://t.me/username" required>
+                        </div>
+                        <div class="input-hint">
+                            <i class="fas fa-info-circle"></i>
+                            Provide a WhatsApp, Telegram, or social media link
+                        </div>
+                        <div class="error-message" id="contactLink-error"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half-width">
+                            <label for="phoneNumber">Phone Number</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-phone"></i>
+                                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+234 XXX XXX XXXX">
+                            </div>
+                        </div>
+
+                        <div class="form-group half-width">
+                            <label for="emailAddress">Email Address</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="emailAddress" name="emailAddress" placeholder="business@email.com">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo Upload Section -->
+                <div class="form-section">
+                    <h2><i class="fas fa-images"></i> Business Photos</h2>
+                    
+                    <!-- Business Flier Upload -->
+                    <div class="upload-section">
+                        <div class="upload-header">
+                            <h3><i class="fas fa-flag"></i> Cover Photo</h3>
+                            <span class="upload-info">Required • JPG, PNG, or GIF</span>
+                        </div>
+                        <div class="upload-area" id="coverPhotoUploadArea">
+                            <div class="upload-placeholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Upload Cover Photo</p>
+                                <p class="upload-hint">Drag & drop or click to browse</p>
+                            </div>
+                            <input type="file" id="coverPhotoUpload" name="coverPhoto" accept=".jpg,.jpeg,.png,.gif" class="file-input" required>
+                        </div>
+                        <div class="uploaded-files" id="coverPhotoPreview"></div>
+                        <div class="error-message" id="coverPhoto-error"></div>
+                    </div>
+
+                    <!-- Additional Photos -->
+                    <div class="upload-section">
+                        <div class="upload-header">
+                            <h3><i class="fas fa-images"></i> Additional Photos</h3>
+                            <span class="upload-info">Optional • Up to 3 photos</span>
+                        </div>
+                        <div class="upload-area" id="additionalPhotosUploadArea">
+                            <div class="upload-placeholder">
+                                <i class="fas fa-images"></i>
+                                <p>Upload Additional Photos</p>
+                                <p class="upload-hint">Drag & drop or click to browse</p>
+                            </div>
+                            <input type="file" id="additionalPhotosUpload" name="additionalPhotos" accept=".jpg,.jpeg,.png,.gif" multiple class="file-input">
+                        </div>
+                        <div class="uploaded-files" id="additionalPhotosPreview"></div>
+                        <div class="error-message" id="additionalPhotos-error"></div>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="form-section">
+                    <h2><i class="fas fa-plus-circle"></i> Additional Information</h2>
+                    
+                    <div class="form-group">
+                        <label for="businessHours">Business Hours</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-clock"></i>
+                            <input type="text" id="businessHours" name="businessHours" placeholder="e.g., Mon-Fri: 9am-6pm">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactInfo">Contact Information</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="contactInfo" name="contactInfo" placeholder="e.g., Call John at 080XXXXXXX">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms and Submit -->
+                <div class="form-section">
+                    <div class="terms-agreement">
+                        <input type="checkbox" id="listingTerms" name="listingTerms" required>
+                        <label for="listingTerms">
+                            I agree to the <a href="#">Terms of Service</a> and confirm all information is accurate
+                        </label>
+                    </div>
+                    <div class="error-message" id="terms-error"></div>
+
+                    <div class="form-actions center">
+                        <button type="submit" id="submitBtn" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> List My Business
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="success-modal">
+            <div class="success-content">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Business Listed Successfully!</h2>
+                <p>Your business is now live on the marketplace.</p>
+                <div class="success-actions">
+                    <a href="index.html" class="success-btn">View on Homepage</a>
+                    <a href="manage-listing.html" class="success-btn">Manage Business</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+
+    <!-- JavaScript -->
+    <script>
+        // Load header component
+        function loadHeader() {
+            fetch('header-component.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-component').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading header component:', error);
+                    document.getElementById('header-component').innerHTML = `
+                        <div class="top-row">
+                            <div class="top-left">
+                                <a href="index.html" class="top-link">Home</a>
+                                <a href="profile.html" class="top-link">Profile</a>
+                                <a href="manage-listing.html" class="top-link">My Business</a>
+                                <a href="#" class="top-link">Help / Support</a>
+                            </div>
+                            <div class="top-right">
+                                <a href="sign.html#signin-page" class="top-link">Login</a>
+                                <span class="slash">/</span>
+                                <a href="sign.html#signup-page" class="top-link">Register</a>
+                            </div>
+                        </div>
+                    `;
+                });
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadHeader);
+    </script>
+    <script src="JS/listings.js"></script>
+</body>
+</html>

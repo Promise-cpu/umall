@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Tips - U-Mall Marketplace</title>
+    <link rel="stylesheet" href="CSS/header-component.css">
+    <link rel="stylesheet" href="CSS/safety.css">
+</head>
+<body>
+    <!-- Header will be inserted here -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Safety Tips</h1>
+                <p class="page-subtitle">Your safety is our priority. Follow these guidelines to ensure secure transactions on our marketplace.</p>
+            </div>
+
+            <!-- Safety Tips List - Clean and simple -->
+            <div class="safety-tips-list">
+                <!-- Tip 1 -->
+                <div class="safety-tip-item">
+                    <div class="tip-number">1</div>
+                    <h3 class="tip-title">Protect Your Identity</h3>
+                    <p class="tip-description">
+                        Always ensure that any publicly displayed information can't put you at risk or expose you to cybercriminals. Since we are on a mission to achieve zero scam cases on our platform, you are required to show a valid means of identification (e.g., your voter's card, national ID card, or international passport) at the point of applying for a shop. Be informed that this document would not be publicly displayed and won't be used for any other purpose apart from ensuring that you are real, and we can vouch for you as a seller on our platform.
+                    </p>
+                </div>
+
+                <!-- Tip 2 -->
+                <div class="safety-tip-item">
+                    <div class="tip-number">2</div>
+                    <h3 class="tip-title">Passwords and Privacy</h3>
+                    <p class="tip-description">
+                        Secure your account on U-Mall by using a strong password with a combination of alphabets, numbers, and special characters. Passwords are meant to be private, do not disclose it to anyone regardless of how trusted they are.
+                    </p>
+                </div>
+
+                <!-- Tip 3 -->
+                <div class="safety-tip-item">
+                    <div class="tip-number">3</div>
+                    <h3 class="tip-title">Meet Publicly</h3>
+                    <p class="tip-description">
+                        Never meet with a seller in a secret and lonely place. If you ever have to meet up with a seller, ensure you do so in a public place you are familiar with where you can get help if the worst arises.
+                    </p>
+                </div>
+
+                <!-- Tip 4 -->
+                <div class="safety-tip-item">
+                    <div class="tip-number">4</div>
+                    <h3 class="tip-title">Stay Vigilant</h3>
+                    <p class="tip-description">
+                        While we keep watch of your account and notify you of any strange activity, we expect you also to be actively involved in ensuring your safety.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Load the header component
+        fetch('header-component.html')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error loading header:', error);
+                // Optional: Display a fallback header if fetch fails
+                document.getElementById('header-placeholder').innerHTML = `
+                    <header style="background: #2c3e50; color: white; padding: 1rem;">
+                        <div class="container">
+                            <h2>U-Mall Marketplace</h2>
+                            <p>Header failed to load</p>
+                        </div>
+                    </header>
+                `;
+            });
+    </script>
+</body>
+</html>

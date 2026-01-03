@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Details - Cell Noun</title>
+    <link rel="stylesheet" href="CSS/display.css">
+    <link rel="stylesheet" href="CSS/header-component.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Main container -->
+    <div class="container">
+        
+        <!-- Header will be loaded dynamically -->
+        <header class="header" id="main-header">
+            <!-- Header will be inserted here by JavaScript -->
+        </header>
+        
+        <!-- Back button -->
+        <div class="back-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Marketplace
+            </a>
+        </div>
+        
+        <!-- Main content -->
+        <main class="business-details">
+            <div class="content-wrapper">
+                
+                <!-- Business header -->
+                <div class="business-header">
+                    <div class="business-image-large">
+                        <div class="image-placeholder-large">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <div class="campus-badge-large">
+                            <i class="fas fa-map-marker-alt"></i> <span id="campus-name">ULI CAMPUS</span>
+                        </div>
+                    </div>
+                    
+                    <div class="business-overview">
+                        <h1 class="business-title" id="business-name">Tech Gadgets Hub</h1>
+                        
+                        <div class="business-tags" id="business-tags">
+                            <span class="tag">Electronics</span>
+                            <span class="tag">Gadgets</span>
+                            <span class="tag">Repairs</span>
+                            <span class="tag">Student Discount</span>
+                        </div>
+                        
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <strong>Location</strong>
+                                    <p id="business-location">Block A, Room 12, Main Building, ULI Campus</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>Business Hours</strong>
+                                    <p id="business-hours">Monday - Friday: 8:00 AM - 6:00 PM</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <strong>Contact</strong>
+                                    <p id="business-contact">+234 812 345 6789</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <a href="#" class="btn-primary" id="contact-btn">
+                                <i class="fas fa-phone"></i> Contact
+                            </a>
+                            <button class="btn-outline">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Business details sections -->
+                <div class="details-grid">
+                    <!-- About section -->
+                    <section class="detail-section about-section">
+                        <h2><i class="fas fa-info-circle"></i> About This Business</h2>
+                        <p id="business-description">Tech Gadgets Hub is your one-stop shop for all electronic needs on campus. We specialize in providing quality gadgets, accessories, and repair services at student-friendly prices.</p>
+                        
+                        <div class="features-list">
+                            <h3>What We Offer:</h3>
+                            <ul id="business-features">
+                                <li><i class="fas fa-check"></i> Phone and laptop repairs</li>
+                                <li><i class="fas fa-check"></i> Quality headphones and speakers</li>
+                                <li><i class="fas fa-check"></i> Chargers and power banks</li>
+                                <li><i class="fas fa-check"></i> Study lamps and desk accessories</li>
+                                <li><i class="fas fa-check"></i> Student discount available</li>
+                                <li><i class="fas fa-check"></i> Warranty on all products</li>
+                            </ul>
+                        </div>
+                    </section>
+                    
+                    <!-- Gallery section -->
+                    <section class="detail-section gallery-section">
+                        <h2><i class="fas fa-images"></i> Gallery</h2>
+                        
+                        <div class="gallery-grid" id="business-gallery">
+                            <!-- Images will be dynamically loaded here -->
+                            <div class="gallery-item">
+                                <div class="image-placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <span>Business Image 1</span>
+                                </div>
+                            </div>
+                            <div class="gallery-item">
+                                <div class="image-placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <span>Business Image 2</span>
+                                </div>
+                            </div>
+                            <div class="gallery-item">
+                                <div class="image-placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <span>Business Image 3</span>
+                                </div>
+                            </div>
+                            <div class="gallery-item">
+                                <div class="image-placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <span>Business Image 4</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>U-MALL Marketplace &copy; 2025 | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="JS/display.js"></script>
+</body>
+</html>
