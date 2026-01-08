@@ -4,25 +4,704 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cell Noun - Campus Marketplace</title>
-    <link rel="stylesheet" href="CSS/header-component.css">
-    <link rel="stylesheet" href="CSS/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header styles - Mobile Optimized */
+        .header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            background-color: #2c3e50;
+        }
+
+        /* Top row - Hidden on mobile, visible on desktop */
+        .top-row {
+            display: none;
+        }
+
+        /* Second row with milky/cream background - Visible on both */
+        .second-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fef9f0;
+            padding: 12px 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            min-height: 60px;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #2c3e50;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        /* Search bar styles - Mobile optimized */
+        .search-container {
+            flex-grow: 1;
+            margin: 0 12px;
+        }
+
+        .search-bar {
+            display: flex;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        #search-input {
+            flex-grow: 1;
+            padding: 12px 16px;
+            border: none;
+            font-size: 0.95rem;
+            background-color: white;
+        }
+
+        #search-input:focus {
+            outline: none;
+        }
+
+        .search-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Sell now button */
+        .sell-now-tab {
+            display: flex;
+            align-items: center;
+        }
+
+        .sell-link {
+            background-color: #a07205;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .sell-link:hover {
+            background-color: #ae9714;
+        }
+
+        /* Side menu styles - Clean and simple */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 280px;
+            height: 100%;
+            background-color: white;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .side-menu.active {
+            left: 0;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .menu-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        /* Campus filter section - Clean design */
+        .campus-filter {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-header {
+            margin-bottom: 16px;
+        }
+
+        .filter-header h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .campus-list {
+            list-style: none;
+        }
+
+        .campus-item {
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #eee;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .campus-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .campus-item.active {
+            background-color: #e3f2fd;
+            border-color: #3498db;
+            color: #3498db;
+        }
+
+        .campus-count {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            background-color: #ecf0f1;
+            padding: 2px 8px;
+            border-radius: 12px;
+            float: right;
+        }
+
+        /* Category section - Clean design */
+        .category-section {
+            padding: 20px;
+            flex-grow: 1;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-list {
+            list-style: none;
+        }
+
+        .menu-item {
+            padding: 0;
+            margin-bottom: 4px;
+        }
+
+        .menu-item a {
+            display: block;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            border-radius: 4px;
+        }
+
+        .menu-item a:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Navigation links in menu */
+        .nav-section {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            padding: 0;
+            margin-bottom: 4px;
+        }
+
+        .nav-item a {
+            display: block;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            border-radius: 4px;
+        }
+
+        .nav-item a:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Overlay styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Main content styles */
+        .main-content {
+            flex-grow: 1;
+            background-color: white;
+            padding: 100px 16px 40px;
+            margin-top: 60px;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Campus filter chips - Hidden on mobile */
+        .campus-chips-container {
+            display: none;
+        }
+
+        /* Business cards section - Mobile optimized */
+        .business-cards-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        /* Business cards grid - Mobile: 2 per row */
+        .business-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .business-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .business-image {
+            position: relative;
+            height: 75%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-placeholder {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .image-placeholder.food {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .image-placeholder.books {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .image-placeholder.dorm {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+        }
+
+        .image-placeholder.online {
+            background: linear-gradient(135deg, #f39c12, #d35400);
+        }
+
+        .image-placeholder.lab {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+        }
+
+        .campus-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .business-info {
+            padding: 12px;
+            height: 25%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .business-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: #2c3e50;
+            margin-bottom: 6px;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .business-location {
+            font-size: 0.85rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+
+        .business-location i {
+            color: #7f8c8d;
+            margin-right: 6px;
+            font-size: 0.8rem;
+        }
+
+        .business-location span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* No results message */
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            border: 2px dashed #ddd;
+            grid-column: 1 / -1;
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+
+        .no-results h3 {
+            font-family: 'Poppins', sans-serif;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .no-results p {
+            color: #95a5a6;
+            font-size: 1rem;
+        }
+
+        /* Footer styles */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Desktop styles */
+        @media (min-width: 769px) {
+            /* Show top row on desktop */
+            .top-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #2c3e50;
+                color: white;
+                padding: 12px 24px;
+                width: 100%;
+            }
+
+            .top-left {
+                display: flex;
+                gap: 24px;
+            }
+
+            .top-link {
+                color: white;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.95rem;
+                transition: color 0.3s;
+                padding: 5px 10px;
+                border-radius: 4px;
+            }
+
+            .top-link:hover {
+                color: #3498db;
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .slash {
+                margin: 0 5px;
+                color: #ecf0f1;
+            }
+
+            /* Adjust second row for desktop */
+            .second-row {
+                padding: 16px 24px;
+            }
+
+            .menu-toggle {
+                font-size: 1.8rem;
+            }
+
+            .search-container {
+                max-width: 600px;
+                margin: 0 24px;
+            }
+
+            #search-input {
+                padding: 14px 20px;
+                font-size: 1rem;
+            }
+
+            .sell-link {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+
+            /* Adjust main content for desktop */
+            .main-content {
+                padding: 140px 24px 40px;
+                margin-top: 120px;
+            }
+
+            /* Show campus chips on desktop */
+            .campus-chips-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 30px;
+            }
+
+            .chip {
+                padding: 8px 16px;
+                background-color: #ecf0f1;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all 0.3s;
+                border: 2px solid transparent;
+            }
+
+            .chip:hover {
+                background-color: #d5dbdb;
+            }
+
+            .chip.active {
+                background-color: #3498db;
+                color: white;
+                border-color: #2980b9;
+            }
+
+            /* Desktop business cards - 4 per row */
+            .business-cards-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 24px;
+            }
+
+            .business-card {
+                height: 320px;
+            }
+
+            .business-image {
+                height: 75%;
+            }
+
+            .image-placeholder {
+                font-size: 3rem;
+            }
+
+            .business-info {
+                padding: 16px;
+            }
+
+            .business-name {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .section-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Tablet styles */
+        @media (max-width: 768px) and (min-width: 481px) {
+            .business-cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .business-card {
+                height: 300px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Small mobile styles */
+        @media (max-width: 480px) {
+            .business-cards-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .business-card {
+                height: 280px;
+            }
+
+            .second-row {
+                padding: 10px 12px;
+            }
+
+            .search-container {
+                margin: 0 8px;
+            }
+
+            .search-bar {
+                border-radius: 20px;
+            }
+
+            #search-input {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+
+            .search-button {
+                padding: 0 16px;
+            }
+
+            .sell-link {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
 </head>
 <body>
-
-    <!-- Header will be inserted here -->
-    <div id="header-placeholder"></div>
-
     <!-- Main container -->
     <div class="container">
         
         <!-- Upper column with two rows -->
         <header class="header">
-            <!-- Header component will be loaded here -->
-            <div id="header-component"></div>
+            <!-- First row - only shown on desktop -->
+            <div class="top-row">
+                <div class="top-left">
+                    <a href="index.html" class="top-link">Home</a>
+                    <a href="profile.html" class="top-link">Profile</a>
+                    <a href="manage-listing.html" class="top-link">Manage Listings</a>
+                    <a href="safety.html" class="top-link">Safety Tips</a>
+                    <a href="#" class="top-link">Help / Support</a>
+                </div>
+                <div class="top-right">
+                    <a href="sign.html#signin-page" class="top-link">Login</a>
+                    <span class="slash">/</span>
+                    <a href="sign.html#signup-page" class="top-link">Register</a>
+                </div>
+            </div>
             
             <!-- Second row with milky/cream background -->
             <div class="second-row">
@@ -50,93 +729,112 @@
         <!-- Side menu panel (hidden by default) -->
         <nav id="side-menu" class="side-menu">
             <div class="menu-header">
-                <h2>Filter by Campus</h2>
+                <h2>Menu</h2>
                 <button id="close-menu" class="close-menu" aria-label="Close menu">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             
+            <!-- Sell Now in Menu -->
+            <div class="campus-filter">
+                <div class="menu-item">
+                    <a href="sign.html#signin-form" class="sell-link" style="display: block; text-align: center;">
+                        Sell Now
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Campus filter section -->
             <div class="campus-filter">
                 <div class="filter-header">
-                    <i class="fas fa-university"></i>
                     <h3>Select Campus</h3>
                 </div>
                 <ul class="campus-list">
                     <li class="campus-item" data-campus="all">
-                        <i class="fas fa-globe"></i>
-                        <span>All Campuses</span>
+                        All Campuses
                         <span class="campus-count">(45)</span>
                     </li>
                     <li class="campus-item active" data-campus="uli">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>ULI Campus</span>
+                        ULI Campus
                         <span class="campus-count">(18)</span>
                     </li>
                     <li class="campus-item" data-campus="awka">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Awka Campus</span>
+                        Awka Campus
                         <span class="campus-count">(15)</span>
                     </li>
                     <li class="campus-item" data-campus="igbariam">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Igbariam Campus</span>
+                        Igbariam Campus
                         <span class="campus-count">(12)</span>
                     </li>
                     <li class="campus-item" data-campus="online">
-                        <i class="fas fa-laptop"></i>
-                        <span>Online Services</span>
+                        Online Services
                         <span class="campus-count">(25)</span>
                     </li>
                 </ul>
             </div>
             
+            <!-- Category section -->
             <div class="category-section">
                 <div class="filter-header">
-                    <i class="fas fa-list"></i>
                     <h3>Categories</h3>
                 </div>
                 <ul class="menu-list">
                     <li class="menu-item">
                         <a href="#">
-                            <i class="fas fa-bed"></i>
                             Dorm and Room Materials
-                            <span class="category-count">(23)</span>
+                            <span class="campus-count">(23)</span>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="#">
-                            <i class="fas fa-utensils"></i>
                             Food and Snacks
-                            <span class="category-count">(31)</span>
+                            <span class="campus-count">(31)</span>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="#">
-                            <i class="fas fa-flask"></i>
                             Medical/Laboratory Equipment
-                            <span class="category-count">(12)</span>
+                            <span class="campus-count">(12)</span>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="#">
-                            <i class="fas fa-user-graduate"></i>
                             Student Services
-                            <span class="category-count">(28)</span>
+                            <span class="campus-count">(28)</span>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="#">
-                            <i class="fas fa-book"></i>
                             Textbooks for Sale
                             <span class="campus-count">(42)</span>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="#">
-                            <i class="fas fa-hotel"></i>
                             Lodges and Accommodation
-                            <span class="category-count">(19)</span>
+                            <span class="campus-count">(19)</span>
                         </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Navigation links -->
+            <div class="nav-section">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="profile.html">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="manage-listing.html">Manage Listings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="safety.html">Safety Tips</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Help / Support</a>
                     </li>
                 </ul>
             </div>
@@ -152,19 +850,14 @@
         <!-- Main content area with business cards -->
         <main class="main-content">
             <div class="content-wrapper">
-
-                <!-- Campus filter chips -->
-              
-                        
-                       
-                    </div>
-                    <div class="campus-chips-container">
-                        <span class="chip active" data-campus="uli">ULI</span>
-                        <span class="chip" data-campus="awka">Awka</span>
-                        <span class="chip" data-campus="igbariam">Igbariam</span>
-                        <span class="chip" data-campus="online">Online</span>
-                        <span class="chip" data-campus="all">All Campuses</span>
-                    </div>
+                
+                <!-- Campus filter chips - only visible on desktop -->
+                <div class="campus-chips-container">
+                    <span class="chip active" data-campus="uli">ULI</span>
+                    <span class="chip" data-campus="awka">Awka</span>
+                    <span class="chip" data-campus="igbariam">Igbariam</span>
+                    <span class="chip" data-campus="online">Online</span>
+                    <span class="chip" data-campus="all">All Campuses</span>
                 </div>
                 
                 <!-- Business cards grid -->
@@ -179,23 +872,13 @@
                                 <div class="image-placeholder">
                                     <i class="fas fa-store"></i>
                                 </div>
-                                <div class="campus-badge">
-                                    <i class="fas fa-map-marker-alt"></i> ULI
-                                </div>
+                                <div class="campus-badge">ULI</div>
                             </div>
                             <div class="business-info">
                                 <h3 class="business-name">Tech Gadgets Hub</h3>
                                 <div class="business-location">
                                     <i class="fas fa-map-pin"></i>
-                                    <span>Block A, Room 12, Main Building</span>
-                                </div>
-                                <div class="business-category">
-                                    <i class="fas fa-tag"></i>
-                                    <span>Electronics & Gadgets</span>
-                                </div>
-                                <div class="business-hours">
-                                    <i class="fas fa-clock"></i>
-                                    <span>Mon-Fri: 8AM - 6PM</span>
+                                    <span>Block A, Room 12</span>
                                 </div>
                             </div>
                         </a>
@@ -206,23 +889,13 @@
                                 <div class="image-placeholder food">
                                     <i class="fas fa-utensils"></i>
                                 </div>
-                                <div class="campus-badge">
-                                    <i class="fas fa-map-marker-alt"></i> ULI
-                                </div>
+                                <div class="campus-badge">ULI</div>
                             </div>
                             <div class="business-info">
                                 <h3 class="business-name">Student Bites Cafe</h3>
                                 <div class="business-location">
                                     <i class="fas fa-map-pin"></i>
-                                    <span>Food Court, Student Center</span>
-                                </div>
-                                <div class="business-category">
-                                    <i class="fas fa-tag"></i>
-                                    <span>Food & Snacks</span>
-                                </div>
-                                <div class="business-hours">
-                                    <i class="fas fa-clock"></i>
-                                    <span>Daily: 7AM - 10PM</span>
+                                    <span>Food Court</span>
                                 </div>
                             </div>
                         </a>
@@ -233,23 +906,13 @@
                                 <div class="image-placeholder books">
                                     <i class="fas fa-book"></i>
                                 </div>
-                                <div class="campus-badge">
-                                    <i class="fas fa-map-marker-alt"></i> AWKA
-                                </div>
+                                <div class="campus-badge">AWKA</div>
                             </div>
                             <div class="business-info">
                                 <h3 class="business-name">Scholar's Bookstore</h3>
                                 <div class="business-location">
                                     <i class="fas fa-map-pin"></i>
-                                    <span>Main Library Building</span>
-                                </div>
-                                <div class="business-category">
-                                    <i class="fas fa-tag"></i>
-                                    <span>Textbooks & Stationery</span>
-                                </div>
-                                <div class="business-hours">
-                                    <i class="fas fa-clock"></i>
-                                    <span>Mon-Sat: 9AM - 5PM</span>
+                                    <span>Main Library</span>
                                 </div>
                             </div>
                         </a>
@@ -260,23 +923,13 @@
                                 <div class="image-placeholder dorm">
                                     <i class="fas fa-bed"></i>
                                 </div>
-                                <div class="campus-badge">
-                                    <i class="fas fa-map-marker-alt"></i> IGBARIAM
-                                </div>
+                                <div class="campus-badge">IGBARIAM</div>
                             </div>
                             <div class="business-info">
                                 <h3 class="business-name">Campus Comfort Store</h3>
                                 <div class="business-location">
                                     <i class="fas fa-map-pin"></i>
                                     <span>Dormitory Block 3</span>
-                                </div>
-                                <div class="business-category">
-                                    <i class="fas fa-tag"></i>
-                                    <span>Dorm Essentials</span>
-                                </div>
-                                <div class="business-hours">
-                                    <i class="fas fa-clock"></i>
-                                    <span>24/7</span>
                                 </div>
                             </div>
                         </a>
@@ -287,23 +940,13 @@
                                 <div class="image-placeholder online">
                                     <i class="fas fa-laptop"></i>
                                 </div>
-                                <div class="campus-badge">
-                                    <i class="fas fa-laptop"></i> ONLINE
-                                </div>
+                                <div class="campus-badge">ONLINE</div>
                             </div>
                             <div class="business-info">
                                 <h3 class="business-name">Campus Tutoring Services</h3>
                                 <div class="business-location">
                                     <i class="fas fa-map-pin"></i>
                                     <span>Virtual Sessions</span>
-                                </div>
-                                <div class="business-category">
-                                    <i class="fas fa-tag"></i>
-                                    <span>Student Services</span>
-                                </div>
-                                <div class="business-hours">
-                                    <i class="fas fa-clock"></i>
-                                    <span>Flexible Hours</span>
                                 </div>
                             </div>
                         </a>
@@ -314,23 +957,13 @@
                                 <div class="image-placeholder lab">
                                     <i class="fas fa-flask"></i>
                                 </div>
-                                <div class="campus-badge">
-                                    <i class="fas fa-map-marker-alt"></i> ULI
-                                </div>
+                                <div class="campus-badge">ULI</div>
                             </div>
                             <div class="business-info">
                                 <h3 class="business-name">Lab Equipment Rentals</h3>
                                 <div class="business-location">
                                     <i class="fas fa-map-pin"></i>
-                                    <span>Science Building, Room 205</span>
-                                </div>
-                                <div class="business-category">
-                                    <i class="fas fa-tag"></i>
-                                    <span>Lab Equipment</span>
-                                </div>
-                                <div class="business-hours">
-                                    <i class="fas fa-clock"></i>
-                                    <span>Mon-Fri: 10AM - 4PM</span>
+                                    <span>Science Building</span>
                                 </div>
                             </div>
                         </a>
@@ -351,38 +984,253 @@
         </footer>
     </div>
 
-    <!-- JavaScript to load header component -->
+    <!-- JavaScript -->
     <script>
-        // Load header component
-        function loadHeader() {
-            fetch('header-component.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-component').innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Error loading header component:', error);
-                    // Fallback header in case fetch fails
-                    document.getElementById('header-component').innerHTML = `
-                        <div class="top-row">
-                            <div class="top-left">
-                                <a href="#" class="top-link">Safety Tips</a>
-                                <a href="#" class="top-link">Help / Support</a>
-                            </div>
-                            <div class="top-right">
-                                <a href="sign.html#signin-form" class="top-link">Login</a>
-                                <span class="slash">/</span>
-                                <a href="sign.html#signup-form" class="top-link">Register</a>
-                            </div>
-                        </div>
-                    `;
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Get DOM elements
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeMenu = document.getElementById('close-menu');
+            const sideMenu = document.getElementById('side-menu');
+            const overlay = document.getElementById('overlay');
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+            const businessCards = document.querySelectorAll('.business-card');
+            const campusItems = document.querySelectorAll('.campus-item');
+            const chips = document.querySelectorAll('.chip');
+            const noResults = document.getElementById('no-results');
+            
+            // Auth state management
+            class AuthStateManager {
+                constructor() {
+                    this.isLoggedIn = false;
+                    this.currentUser = null;
+                    this.init();
+                }
+
+                init() {
+                    this.checkLoginStatus();
+                    this.updateHeader();
+                }
+
+                checkLoginStatus() {
+                    const userData = localStorage.getItem('user');
+                    if (userData) {
+                        try {
+                            this.currentUser = JSON.parse(userData);
+                            this.isLoggedIn = true;
+                        } catch (e) {
+                            console.error('Error parsing user data:', e);
+                            this.logout();
+                        }
+                    }
+                }
+
+                updateHeader() {
+                    // This would update login/register links based on auth state
+                    // For now, we'll keep it simple
+                }
+
+                login(userData) {
+                    localStorage.setItem('user', JSON.stringify(userData));
+                    this.currentUser = userData;
+                    this.isLoggedIn = true;
+                    this.updateHeader();
+                    window.dispatchEvent(new Event('userLogin'));
+                }
+
+                logout() {
+                    localStorage.removeItem('user');
+                    this.currentUser = null;
+                    this.isLoggedIn = false;
+                    this.updateHeader();
+                    window.dispatchEvent(new Event('userLogout'));
+                }
+            }
+
+            // Initialize auth state
+            const authState = new AuthStateManager();
+            
+            /**
+             * Toggle the side menu open/close
+             */
+            function toggleMenu() {
+                sideMenu.classList.toggle('active');
+                overlay.classList.toggle('active');
+                
+                if (sideMenu.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = 'auto';
+                }
+            }
+            
+            /**
+             * Close the side menu
+             */
+            function closeSideMenu() {
+                sideMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+            
+            /**
+             * Handle search functionality
+             */
+            function handleSearch() {
+                const searchTerm = searchInput.value.trim();
+                
+                if (searchTerm) {
+                    console.log(`Searching for: ${searchTerm}`);
+                    alert(`Searching for "${searchTerm}". You will be redirected to search results.`);
+                    searchInput.value = '';
+                } else {
+                    alert('Please enter a search term');
+                    searchInput.focus();
+                }
+            }
+            
+            /**
+             * Filter businesses by campus
+             * @param {string} campus - The campus to filter by
+             */
+            function filterByCampus(campus) {
+                let visibleCards = 0;
+                
+                businessCards.forEach(card => {
+                    const cardCampus = card.getAttribute('data-campus');
+                    
+                    if (campus === 'all' || cardCampus === campus) {
+                        card.style.display = 'block';
+                        visibleCards++;
+                    } else {
+                        card.style.display = 'none';
+                    }
                 });
-        }
-        
-        // Load header when DOM is ready
-        document.addEventListener('DOMContentLoaded', loadHeader);
+                
+                // Show/hide no results message
+                if (visibleCards === 0) {
+                    noResults.style.display = 'block';
+                } else {
+                    noResults.style.display = 'none';
+                }
+                
+                // Update active state for campus items
+                campusItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('data-campus') === campus) {
+                        item.classList.add('active');
+                    }
+                });
+                
+                // Update active state for chips
+                chips.forEach(chip => {
+                    chip.classList.remove('active');
+                    if (chip.getAttribute('data-campus') === campus) {
+                        chip.classList.add('active');
+                    }
+                });
+                
+                // Update section title
+                const sectionTitle = document.querySelector('.section-title');
+                if (campus === 'all') {
+                    sectionTitle.textContent = 'All Businesses';
+                } else {
+                    const campusName = campus.toUpperCase();
+                    sectionTitle.textContent = `Businesses in ${campusName} Campus`;
+                }
+                
+                // Close menu on mobile after selection
+                if (window.innerWidth <= 768) {
+                    closeSideMenu();
+                }
+            }
+            
+            /**
+             * Handle keyboard events for search
+             * @param {Event} event - The keyboard event
+             */
+            function handleSearchKeyPress(event) {
+                if (event.key === 'Enter') {
+                    handleSearch();
+                }
+            }
+            
+            /**
+             * Initialize event listeners
+             */
+            function initEventListeners() {
+                // Menu toggle button
+                menuToggle.addEventListener('click', toggleMenu);
+                
+                // Close menu button
+                closeMenu.addEventListener('click', closeSideMenu);
+                
+                // Overlay click to close menu
+                overlay.addEventListener('click', closeSideMenu);
+                
+                // Search functionality
+                searchButton.addEventListener('click', handleSearch);
+                searchInput.addEventListener('keypress', handleSearchKeyPress);
+                
+                // Campus filter items in side menu
+                campusItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const campus = this.getAttribute('data-campus');
+                        filterByCampus(campus);
+                    });
+                });
+                
+                // Campus filter chips (desktop only)
+                chips.forEach(chip => {
+                    chip.addEventListener('click', function() {
+                        const campus = this.getAttribute('data-campus');
+                        filterByCampus(campus);
+                    });
+                });
+                
+                // Menu navigation links
+                const menuLinks = document.querySelectorAll('.menu-item a, .nav-item a');
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        if (this.getAttribute('href') === '#') {
+                            e.preventDefault();
+                            const linkText = this.textContent || this.innerText;
+                            alert(`Navigating to ${linkText}. In a real application, this would load the appropriate page.`);
+                            closeSideMenu();
+                        }
+                    });
+                });
+                
+                // Sell Now link in menu
+                const sellNowMenuLink = document.querySelector('.side-menu .sell-link');
+                if (sellNowMenuLink) {
+                    sellNowMenuLink.addEventListener('click', function(e) {
+                        if (this.getAttribute('href') === 'sign.html#signin-form') {
+                            closeSideMenu();
+                        }
+                    });
+                }
+            }
+            
+            /**
+             * Initialize the page
+             */
+            function init() {
+                console.log('Cell Noun marketplace page initialized');
+                initEventListeners();
+                
+                // Filter by default campus (ULI)
+                filterByCampus('uli');
+                
+                // Add a welcome message in console
+                console.log('Welcome to Cell Noun Marketplace!');
+            }
+            
+            // Initialize the page
+            init();
+        });
     </script>
-    
-    <script src="JS/index.js"></script>
 </body>
 </html>
