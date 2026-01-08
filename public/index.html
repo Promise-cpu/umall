@@ -9,7 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-       /* Reset and base styles */
+      
+      /* Reset and base styles */
 * {
     margin: 0;
     padding: 0;
@@ -338,11 +339,16 @@ body {
     margin-bottom: 25px;
 }
 
-/* Business cards grid - Mobile: 2 per row by default */
+/* =========================================== */
+/* BUSINESS CARDS GRID - MOBILE FIRST (2 COLUMNS) */
+/* =========================================== */
+
+/* Base mobile layout: 2 cards per row */
 .business-cards-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+    width: 100%;
 }
 
 .business-card {
@@ -356,8 +362,8 @@ body {
     transition: all 0.3s ease;
     border: 1px solid #eee;
     height: 260px;
-    display: flex;
-    flex-direction: column;
+    width: 100%;
+    min-width: 0; /* Prevent flexbox issues */
 }
 
 .business-image {
@@ -413,6 +419,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    overflow: hidden;
 }
 
 .business-name {
@@ -437,12 +444,14 @@ body {
     color: #7f8c8d;
     margin-right: 6px;
     font-size: 0.8rem;
+    flex-shrink: 0;
 }
 
 .business-location span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex-grow: 1;
 }
 
 /* No results message */
@@ -491,7 +500,75 @@ body {
     text-decoration: underline;
 }
 
-/* Desktop styles */
+/* =========================================== */
+/* MEDIA QUERIES */
+/* =========================================== */
+
+/* Extra small screens (below 360px) - 1 card per row */
+@media (max-width: 359px) {
+    .business-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .business-card {
+        height: 260px;
+    }
+}
+
+/* Small mobile screens (360px to 480px) - 2 cards per row */
+@media (min-width: 360px) and (max-width: 480px) {
+    .business-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .business-card {
+        height: 250px;
+    }
+    
+    .business-name {
+        font-size: 0.9rem;
+    }
+    
+    .business-location {
+        font-size: 0.75rem;
+    }
+    
+    .image-placeholder {
+        font-size: 2rem;
+    }
+}
+
+/* Tablet screens (481px to 768px) - 2 cards per row */
+@media (min-width: 481px) and (max-width: 768px) {
+    .business-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .business-card {
+        height: 280px;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .business-name {
+        font-size: 1rem;
+    }
+    
+    .business-location {
+        font-size: 0.85rem;
+    }
+    
+    .image-placeholder {
+        font-size: 2.5rem;
+    }
+}
+
+/* Desktop styles (769px and above) */
 @media (min-width: 769px) {
     /* Show top row on desktop */
     .top-row {
@@ -612,6 +689,10 @@ body {
     .business-name {
         font-size: 1.1rem;
     }
+    
+    .business-location {
+        font-size: 0.9rem;
+    }
 
     .section-title {
         font-size: 2rem;
@@ -622,33 +703,8 @@ body {
     }
 }
 
-/* Tablet styles (481px to 768px) */
-@media (max-width: 768px) and (min-width: 481px) {
-    .business-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-    }
-
-    .business-card {
-        height: 280px;
-    }
-
-    .section-title {
-        font-size: 1.8rem;
-    }
-}
-
-/* Small mobile styles (below 480px) */
+/* Responsive adjustments for mobile header */
 @media (max-width: 480px) {
-    .business-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-
-    .business-card {
-        height: 250px;
-    }
-
     .second-row {
         padding: 10px 12px;
     }
@@ -677,42 +733,6 @@ body {
 
     .section-title {
         font-size: 1.4rem;
-    }
-
-    .business-name {
-        font-size: 0.9rem;
-    }
-
-    .business-location {
-        font-size: 0.75rem;
-    }
-
-    .image-placeholder {
-        font-size: 2rem;
-    }
-}
-
-/* Extra small screens (below 360px) */
-@media (max-width: 360px) {
-    .business-cards-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .business-card {
-        height: 260px;
-    }
-
-    .business-name {
-        font-size: 1rem;
-    }
-
-    .business-location {
-        font-size: 0.85rem;
-    }
-
-    .image-placeholder {
-        font-size: 2.5rem;
     }
 }
     </style>
