@@ -4,87 +4,481 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safety Tips - U-Mall Marketplace</title>
-    <link rel="stylesheet" href="CSS/header-component.css">
-    <link rel="stylesheet" href="CSS/safety.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER STYLES - EXACT MATCH TO OTHER PAGES */
+        .header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            background-color: #2c3e50;
+        }
+
+        /* Top row - Hidden on mobile, visible on desktop */
+        .top-row {
+            display: none;
+        }
+
+       
+
+        /* Top row - Show only on desktop (769px and above) */
+        @media (min-width: 769px) {
+            .top-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #2c3e50;
+                color: white;
+                padding: 12px 24px;
+                width: 100%;
+            }
+
+            .top-left {
+                display: flex;
+                gap: 24px;
+            }
+
+            .top-link {
+                color: white;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.95rem;
+                transition: color 0.3s;
+                padding: 5px 10px;
+                border-radius: 4px;
+            }
+
+            .top-link:hover {
+                color: #3498db;
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .top-link.active {
+                color: #3498db;
+            }
+
+            .slash {
+                margin: 0 5px;
+                color: #ecf0f1;
+            }
+        }
+
+        /* Hide header completely on mobile */
+        @media (max-width: 768px) {
+            .header {
+                display: none;
+            }
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex-grow: 1;
+            background-color: white;
+            padding: 100px 24px 40px;
+            margin-top: 60px;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .page-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .page-title i {
+            color: #3498db;
+        }
+
+        .page-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Safety Tips List - Clean and simple */
+        .safety-tips-list {
+            width: 100%;
+        }
+
+        .safety-tip-item {
+            margin-bottom: 35px;
+            padding-bottom: 35px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .safety-tip-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        .safety-tip-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 25px;
+            border-bottom: none;
+        }
+
+        .tip-number {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .tip-title {
+            display: inline-block;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .tip-description {
+            color: #555;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            margin-left: 50px;
+            margin-top: 10px;
+        }
+
+        /* Footer styles */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Back to Home button */
+        .back-container {
+            background-color: #fef9f0;
+            padding: 15px 24px;
+            margin-top: 60px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background-color: white;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #f5f5f5;
+            border-color: #3498db;
+            color: #3498db;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 30px 16px;
+                margin-top: 30px;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .tip-title {
+                font-size: 1.2rem;
+            }
+            
+            .tip-description {
+                margin-left: 0;
+                font-size: 1rem;
+            }
+            
+            .tip-number {
+                display: block;
+                margin-bottom: 10px;
+                width: 32px;
+                height: 32px;
+                line-height: 32px;
+                margin-right: 0;
+            }
+            
+            .safety-tip-item {
+                padding: 20px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .main-content {
+                padding: 140px 24px 40px;
+                margin-top: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+            
+            .safety-tip-item {
+                padding: 15px;
+            }
+            
+            .tip-description {
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid #3498db;
+            outline-offset: 2px;
+        }
+    </style>
 </head>
 <body>
-    <!-- Header will be inserted here -->
-    <div id="header-placeholder"></div>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <!-- Page Header -->
-            <div class="page-header">
-                <h1 class="page-title">Safety Tips</h1>
-                <p class="page-subtitle">Your safety is our priority. Follow these guidelines to ensure secure transactions on our marketplace.</p>
-            </div>
-
-            <!-- Safety Tips List - Clean and simple -->
-            <div class="safety-tips-list">
-                <!-- Tip 1 -->
-                <div class="safety-tip-item">
-                    <div class="tip-number">1</div>
-                    <h3 class="tip-title">Protect Your Identity</h3>
-                    <p class="tip-description">
-                        Always ensure that any publicly displayed information can't put you at risk or expose you to cybercriminals. Since we are on a mission to achieve zero scam cases on our platform, you are required to show a valid means of identification (e.g., your voter's card, national ID card, or international passport) at the point of applying for a shop. Be informed that this document would not be publicly displayed and won't be used for any other purpose apart from ensuring that you are real, and we can vouch for you as a seller on our platform.
-                    </p>
+    <!-- Main container -->
+    <div class="container">
+        <!-- HEADER - EXACT MATCH TO OTHER PAGES -->
+        <header class="header">
+            <!-- First row - only shown on desktop -->
+            <div class="top-row">
+                <div class="top-left">
+                    <a href="index.html" class="top-link">Home</a>
+                    <a href="profile.html" class="top-link">Profile</a>
+                    <a href="manage-listing.html" class="top-link">Manage Listings</a>
+                    <a href="safety.html" class="top-link active">Safety Tips</a>
+                    <a href="#" class="top-link">Help / Support</a>
                 </div>
-
-                <!-- Tip 2 -->
-                <div class="safety-tip-item">
-                    <div class="tip-number">2</div>
-                    <h3 class="tip-title">Passwords and Privacy</h3>
-                    <p class="tip-description">
-                        Secure your account on U-Mall by using a strong password with a combination of alphabets, numbers, and special characters. Passwords are meant to be private, do not disclose it to anyone regardless of how trusted they are.
-                    </p>
-                </div>
-
-                <!-- Tip 3 -->
-                <div class="safety-tip-item">
-                    <div class="tip-number">3</div>
-                    <h3 class="tip-title">Meet Publicly</h3>
-                    <p class="tip-description">
-                        Never meet with a seller in a secret and lonely place. If you ever have to meet up with a seller, ensure you do so in a public place you are familiar with where you can get help if the worst arises.
-                    </p>
-                </div>
-
-                <!-- Tip 4 -->
-                <div class="safety-tip-item">
-                    <div class="tip-number">4</div>
-                    <h3 class="tip-title">Stay Vigilant</h3>
-                    <p class="tip-description">
-                        While we keep watch of your account and notify you of any strange activity, we expect you also to be actively involved in ensuring your safety.
-                    </p>
+                <div class="top-right" id="auth-links">
+                    <!-- Will be dynamically populated by JavaScript -->
                 </div>
             </div>
+            
+            <!-- Second row - Not needed for safety page -->
+            <div class="second-row"></div>
+        </header>
+        
+        <!-- Back to Home button -->
+        <div class="back-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
         </div>
-    </main>
 
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1 class="page-title"><i class="fas fa-shield-alt"></i> Safety Tips</h1>
+                    <p class="page-subtitle">Your safety is our priority. Follow these guidelines to ensure secure transactions on our marketplace.</p>
+                </div>
+
+                <!-- Safety Tips List - Clean and simple -->
+                <div class="safety-tips-list">
+                    <!-- Tip 1 -->
+                    <div class="safety-tip-item">
+                        <div class="tip-number">1</div>
+                        <h3 class="tip-title">Protect Your Identity</h3>
+                        <p class="tip-description">
+                            Always ensure that any publicly displayed information can't put you at risk or expose you to cybercriminals. Since we are on a mission to achieve zero scam cases on our platform, you are required to show a valid means of identification (e.g., your voter's card, national ID card, or international passport) at the point of applying for a shop. Be informed that this document would not be publicly displayed and won't be used for any other purpose apart from ensuring that you are real, and we can vouch for you as a seller on our platform.
+                        </p>
+                    </div>
+
+                    <!-- Tip 2 -->
+                    <div class="safety-tip-item">
+                        <div class="tip-number">2</div>
+                        <h3 class="tip-title">Passwords and Privacy</h3>
+                        <p class="tip-description">
+                            Secure your account on U-Mall by using a strong password with a combination of alphabets, numbers, and special characters. Passwords are meant to be private, do not disclose it to anyone regardless of how trusted they are.
+                        </p>
+                    </div>
+
+                    <!-- Tip 3 -->
+                    <div class="safety-tip-item">
+                        <div class="tip-number">3</div>
+                        <h3 class="tip-title">Meet Publicly</h3>
+                        <p class="tip-description">
+                            Never meet with a seller in a secret and lonely place. If you ever have to meet up with a seller, ensure you do so in a public place you are familiar with where you can get help if the worst arises.
+                        </p>
+                    </div>
+
+                    <!-- Tip 4 -->
+                    <div class="safety-tip-item">
+                        <div class="tip-number">4</div>
+                        <h3 class="tip-title">Stay Vigilant</h3>
+                        <p class="tip-description">
+                            While we keep watch of your account and notify you of any strange activity, we expect you also to be actively involved in ensuring your safety.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>U-MALL Marketplace &copy; 2025 | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
     <script>
-        // Load the header component
-        fetch('header-component.html')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+        /**
+         * Safety Page JavaScript
+         * Self-contained with dynamic header authentication state
+         */
+
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Header authentication links container
+            const authLinksContainer = document.getElementById('auth-links');
+            
+            // Initialize
+            init();
+            
+            function init() {
+                updateAuthLinks();
+            }
+            
+            /**
+             * Check if user is logged in and update header accordingly
+             */
+            function checkLoggedInStatus() {
+                const currentUser = localStorage.getItem('currentUser');
+                return currentUser ? JSON.parse(currentUser) : null;
+            }
+            
+            /**
+             * Update authentication links in header
+             */
+            function updateAuthLinks() {
+                if (!authLinksContainer) return;
+                
+                const currentUser = checkLoggedInStatus();
+                
+                if (currentUser) {
+                    // User is logged in - show logout
+                    authLinksContainer.innerHTML = `
+                        <a href="profile.html" class="top-link">Profile</a>
+                        <a href="#" class="top-link" id="header-logout-link">
+                            Logout
+                        </a>
+                    `;
+                    
+                    // Add event listener to header logout link
+                    const headerLogoutLink = document.getElementById('header-logout-link');
+                    if (headerLogoutLink) {
+                        headerLogoutLink.addEventListener('click', handleLogout);
+                    }
+                } else {
+                    // User is not logged in - show login/register
+                    authLinksContainer.innerHTML = `
+                        <a href="sign.html#signin-page" class="top-link">Login</a>
+                        <span class="slash">/</span>
+                        <a href="sign.html#signup-page" class="top-link">Register</a>
+                    `;
                 }
-                return response.text();
-            })
-            .then(data => {
-                document.getElementById('header-placeholder').innerHTML = data;
-            })
-            .catch(error => {
-                console.error('Error loading header:', error);
-                // Optional: Display a fallback header if fetch fails
-                document.getElementById('header-placeholder').innerHTML = `
-                    <header style="background: #2c3e50; color: white; padding: 1rem;">
-                        <div class="container">
-                            <h2>U-Mall Marketplace</h2>
-                            <p>Header failed to load</p>
-                        </div>
-                    </header>
-                `;
-            });
+            }
+            
+            /**
+             * Handle logout from header
+             */
+            function handleLogout(e) {
+                e.preventDefault();
+                if (confirm('Are you sure you want to logout?')) {
+                    // Clear localStorage
+                    localStorage.removeItem('currentUser');
+                    
+                    // Update header
+                    updateAuthLinks();
+                    
+                    // If on profile page, redirect to home
+                    if (window.location.pathname.includes('profile.html')) {
+                        window.location.href = 'index.html';
+                    } else {
+                        // Refresh the current page
+                        window.location.reload();
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>

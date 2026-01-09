@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cell Noun - Campus Marketplace</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -279,7 +284,7 @@
         }
 
         .section-title {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Popsins', sans-serif;
             font-size: 1.6rem;
             color: #2c3e50;
             margin-bottom: 8px;
@@ -390,6 +395,13 @@
             white-space: nowrap;
         }
 
+        .business-price {
+            font-size: 0.9rem;
+            color: #27ae60;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
         .business-location {
             font-size: 0.85rem;
             color: #555;
@@ -409,6 +421,42 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             flex-grow: 1;
+        }
+
+        /* Category badge */
+        .category-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(231, 76, 60, 0.9);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            grid-column: 1 / -1;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* No results message */
@@ -758,7 +806,7 @@
                 
                 <!-- Sell Now button - Will be positioned differently based on screen size -->
                 <div class="sell-now-tab">
-                    <a href="sign.html#signin-form" class="sell-link">
+                    <a href="listings.html" class="sell-link">
                         Sell Now
                     </a>
                 </div>
@@ -777,7 +825,7 @@
             <!-- Sell Now in Menu -->
             <div class="campus-filter">
                 <div class="menu-item">
-                    <a href="sign.html#signin-form" class="sell-link" style="display: block; text-align: center; background-color: #a07205; color: white; border: none;">
+                    <a href="listings.html" class="sell-link" style="display: block; text-align: center; background-color: #a07205; color: white; border: none;">
                         Sell Now
                     </a>
                 </div>
@@ -875,8 +923,6 @@
                     </li>
                 </ul>
             </div>
-            
-            <!-- Removed footer from side menu as requested -->
         </nav>
         
         <!-- Overlay for menu background (hidden by default) -->
@@ -897,111 +943,16 @@
                 
                 <!-- Business cards grid -->
                 <section class="business-cards-section">
-                    <h2 class="section-title">Businesses in ULI Campus</h2>
-                    <p class="section-subtitle">Discover local businesses and services near you</p>
+                    <h2 class="section-title" id="section-title">Businesses in ULI Campus</h2>
+                    <p class="section-subtitle" id="section-subtitle">Discover local businesses and services near you</p>
                     
-                    <div class="business-cards-grid">
-                        <!-- Business Card 1 -->
-                        <a href="display.html?id=1" class="business-card" data-campus="uli">
-                            <div class="business-image">
-                                <div class="image-placeholder">
-                                    <i class="fas fa-store"></i>
-                                </div>
-                                <div class="campus-badge">ULI</div>
-                            </div>
-                            <div class="business-info">
-                                <h3 class="business-name">Tech Gadgets Hub</h3>
-                                <div class="business-location">
-                                    <i class="fas fa-map-pin"></i>
-                                    <span>Block A, Room 12</span>
-                                </div>
-                            </div>
-                        </a>
+                    <div class="business-cards-grid" id="business-cards-grid">
+                        <!-- Loading spinner -->
+                        <div class="loading-spinner" id="loading-spinner">
+                            <div class="spinner"></div>
+                        </div>
                         
-                        <!-- Business Card 2 -->
-                        <a href="display.html?id=2" class="business-card" data-campus="uli">
-                            <div class="business-image">
-                                <div class="image-placeholder food">
-                                    <i class="fas fa-utensils"></i>
-                                </div>
-                                <div class="campus-badge">ULI</div>
-                            </div>
-                            <div class="business-info">
-                                <h3 class="business-name">Student Bites Cafe</h3>
-                                <div class="business-location">
-                                    <i class="fas fa-map-pin"></i>
-                                    <span>Food Court</span>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <!-- Business Card 3 -->
-                        <a href="display.html?id=3" class="business-card" data-campus="awka">
-                            <div class="business-image">
-                                <div class="image-placeholder books">
-                                    <i class="fas fa-book"></i>
-                                </div>
-                                <div class="campus-badge">AWKA</div>
-                            </div>
-                            <div class="business-info">
-                                <h3 class="business-name">Scholar's Bookstore</h3>
-                                <div class="business-location">
-                                    <i class="fas fa-map-pin"></i>
-                                    <span>Main Library</span>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <!-- Business Card 4 -->
-                        <a href="display.html?id=4" class="business-card" data-campus="igbariam">
-                            <div class="business-image">
-                                <div class="image-placeholder dorm">
-                                    <i class="fas fa-bed"></i>
-                                </div>
-                                <div class="campus-badge">IGBARIAM</div>
-                            </div>
-                            <div class="business-info">
-                                <h3 class="business-name">Campus Comfort Store</h3>
-                                <div class="business-location">
-                                    <i class="fas fa-map-pin"></i>
-                                    <span>Dormitory Block 3</span>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <!-- Business Card 5 -->
-                        <a href="display.html?id=5" class="business-card" data-campus="online">
-                            <div class="business-image">
-                                <div class="image-placeholder online">
-                                    <i class="fas fa-laptop"></i>
-                                </div>
-                                <div class="campus-badge">ONLINE</div>
-                            </div>
-                            <div class="business-info">
-                                <h3 class="business-name">Campus Tutoring Services</h3>
-                                <div class="business-location">
-                                    <i class="fas fa-map-pin"></i>
-                                    <span>Virtual Sessions</span>
-                                </div>
-                            </div>
-                        </a>
-                        
-                        <!-- Business Card 6 -->
-                        <a href="display.html?id=6" class="business-card" data-campus="uli">
-                            <div class="business-image">
-                                <div class="image-placeholder lab">
-                                    <i class="fas fa-flask"></i>
-                                </div>
-                                <div class="campus-badge">ULI</div>
-                            </div>
-                            <div class="business-info">
-                                <h3 class="business-name">Lab Equipment Rentals</h3>
-                                <div class="business-location">
-                                    <i class="fas fa-map-pin"></i>
-                                    <span>Science Building</span>
-                                </div>
-                            </div>
-                        </a>
+                        <!-- Cards will be dynamically loaded here from Firebase -->
                     </div>
                 </section>
                 
@@ -1021,6 +972,21 @@
 
     <!-- JavaScript -->
     <script>
+        // Firebase Configuration - REPLACE WITH YOUR ACTUAL CONFIG
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
             
@@ -1031,10 +997,17 @@
             const overlay = document.getElementById('overlay');
             const searchInput = document.getElementById('search-input');
             const searchButton = document.getElementById('search-button');
-            const businessCards = document.querySelectorAll('.business-card');
+            const businessCardsGrid = document.getElementById('business-cards-grid');
             const campusItems = document.querySelectorAll('.campus-item');
             const chips = document.querySelectorAll('.chip');
             const noResults = document.getElementById('no-results');
+            const sectionTitle = document.getElementById('section-title');
+            const sectionSubtitle = document.getElementById('section-subtitle');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            
+            // Global variables
+            let currentCampus = 'uli';
+            let allProducts = [];
             
             /**
              * Toggle the side menu open/close
@@ -1063,66 +1036,96 @@
              * Handle search functionality
              */
             function handleSearch() {
-                const searchTerm = searchInput.value.trim();
+                const searchTerm = searchInput.value.trim().toLowerCase();
                 
                 if (searchTerm) {
-                    console.log(`Searching for: ${searchTerm}`);
-                    alert(`Searching for "${searchTerm}". You will be redirected to search results.`);
-                    searchInput.value = '';
+                    filterProductsBySearch(searchTerm);
                 } else {
-                    alert('Please enter a search term');
-                    searchInput.focus();
+                    // If search is empty, show all products for current campus
+                    filterProductsByCampus(currentCampus);
                 }
             }
             
             /**
-             * Filter businesses by campus
-             * @param {string} campus - The campus to filter by
+             * Filter products by search term
              */
-            function filterByCampus(campus) {
-                let visibleCards = 0;
+            function filterProductsBySearch(searchTerm) {
+                const filteredProducts = allProducts.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.description.toLowerCase().includes(searchTerm) ||
+                    product.category.toLowerCase().includes(searchTerm) ||
+                    product.location.toLowerCase().includes(searchTerm)
+                );
                 
-                businessCards.forEach(card => {
-                    const cardCampus = card.getAttribute('data-campus');
-                    
-                    if (campus === 'all' || cardCampus === campus) {
-                        card.style.display = 'block';
-                        visibleCards++;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
+                displayProducts(filteredProducts);
                 
-                // Show/hide no results message
-                if (visibleCards === 0) {
+                // Update section title
+                sectionTitle.textContent = `Search Results for "${searchTerm}"`;
+                sectionSubtitle.textContent = `${filteredProducts.length} products found`;
+                
+                // Show/hide no results
+                if (filteredProducts.length === 0) {
                     noResults.style.display = 'block';
                 } else {
                     noResults.style.display = 'none';
                 }
+            }
+            
+            /**
+             * Load products from Firebase
+             */
+            async function loadProductsFromFirebase() {
+                try {
+                    loadingSpinner.style.display = 'flex';
+                    
+                    const productsRef = db.collection('products');
+                    const snapshot = await productsRef.where('status', '==', 'active').get();
+                    
+                    allProducts = [];
+                    snapshot.forEach(doc => {
+                        const product = {
+                            id: doc.id,
+                            ...doc.data()
+                        };
+                        allProducts.push(product);
+                    });
+                    
+                    console.log(`Loaded ${allProducts.length} products from Firebase`);
+                    
+                    // Filter by default campus
+                    filterProductsByCampus(currentCampus);
+                    
+                } catch (error) {
+                    console.error('Error loading products:', error);
+                    showErrorMessage('Failed to load products. Please try again.');
+                } finally {
+                    loadingSpinner.style.display = 'none';
+                }
+            }
+            
+            /**
+             * Filter products by campus
+             */
+            function filterProductsByCampus(campus) {
+                currentCampus = campus;
                 
-                // Update active state for campus items
-                campusItems.forEach(item => {
-                    item.classList.remove('active');
-                    if (item.getAttribute('data-campus') === campus) {
-                        item.classList.add('active');
-                    }
-                });
+                const filteredProducts = campus === 'all' 
+                    ? allProducts 
+                    : allProducts.filter(product => product.campus === campus);
                 
-                // Update active state for chips
-                chips.forEach(chip => {
-                    chip.classList.remove('active');
-                    if (chip.getAttribute('data-campus') === campus) {
-                        chip.classList.add('active');
-                    }
-                });
+                displayProducts(filteredProducts);
                 
                 // Update section title
-                const sectionTitle = document.querySelector('.section-title');
-                if (campus === 'all') {
-                    sectionTitle.textContent = 'All Businesses';
+                updateSectionTitle(campus, filteredProducts.length);
+                
+                // Update active state for campus items
+                updateCampusActiveState(campus);
+                
+                // Show/hide no results
+                if (filteredProducts.length === 0) {
+                    noResults.style.display = 'block';
                 } else {
-                    const campusName = campus.toUpperCase();
-                    sectionTitle.textContent = `Businesses in ${campusName} Campus`;
+                    noResults.style.display = 'none';
                 }
                 
                 // Close menu on mobile after selection
@@ -1132,13 +1135,121 @@
             }
             
             /**
+             * Display products in the grid
+             */
+            function displayProducts(products) {
+                businessCardsGrid.innerHTML = '';
+                
+                products.forEach(product => {
+                    const card = createProductCard(product);
+                    businessCardsGrid.appendChild(card);
+                });
+            }
+            
+            /**
+             * Create a product card element
+             */
+            function createProductCard(product) {
+                const card = document.createElement('a');
+                card.href = `display.html?id=${product.id}`;
+                card.className = 'business-card';
+                card.setAttribute('data-campus', product.campus);
+                
+                // Get icon and color based on category
+                const { icon, colorClass } = getCategoryIcon(product.category);
+                
+                card.innerHTML = `
+                    <div class="business-image">
+                        <div class="image-placeholder ${colorClass}">
+                            <i class="${icon}"></i>
+                        </div>
+                        <div class="campus-badge">${product.campus.toUpperCase()}</div>
+                        ${product.category ? `<div class="category-badge">${product.category}</div>` : ''}
+                    </div>
+                    <div class="business-info">
+                        <h3 class="business-name">${product.name}</h3>
+                        ${product.price ? `<div class="business-price">₦${parseFloat(product.price).toLocaleString()}</div>` : ''}
+                        <div class="business-location">
+                            <i class="fas fa-map-pin"></i>
+                            <span>${product.location || 'Campus Location'}</span>
+                        </div>
+                    </div>
+                `;
+                
+                return card;
+            }
+            
+            /**
+             * Get icon and color class based on category
+             */
+            function getCategoryIcon(category) {
+                const categories = {
+                    'Food and Snacks': { icon: 'fas fa-utensils', colorClass: 'food' },
+                    'Textbooks for Sale': { icon: 'fas fa-book', colorClass: 'books' },
+                    'Dorm and Room Materials': { icon: 'fas fa-bed', colorClass: 'dorm' },
+                    'Medical/Laboratory Equipment': { icon: 'fas fa-flask', colorClass: 'lab' },
+                    'Student Services': { icon: 'fas fa-laptop', colorClass: 'online' },
+                    'Lodges and Accommodation': { icon: 'fas fa-hotel', colorClass: 'dorm' }
+                };
+                
+                return categories[category] || { icon: 'fas fa-store', colorClass: '' };
+            }
+            
+            /**
+             * Update section title based on campus
+             */
+            function updateSectionTitle(campus, count) {
+                if (campus === 'all') {
+                    sectionTitle.textContent = 'All Products';
+                    sectionSubtitle.textContent = `${count} products available across all campuses`;
+                } else {
+                    const campusName = campus.toUpperCase();
+                    sectionTitle.textContent = `Products in ${campusName} Campus`;
+                    sectionSubtitle.textContent = `${count} products available`;
+                }
+            }
+            
+            /**
+             * Update active state for campus filter
+             */
+            function updateCampusActiveState(campus) {
+                // Update side menu items
+                campusItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('data-campus') === campus) {
+                        item.classList.add('active');
+                    }
+                });
+                
+                // Update chips (desktop)
+                chips.forEach(chip => {
+                    chip.classList.remove('active');
+                    if (chip.getAttribute('data-campus') === campus) {
+                        chip.classList.add('active');
+                    }
+                });
+            }
+            
+            /**
              * Handle keyboard events for search
-             * @param {Event} event - The keyboard event
              */
             function handleSearchKeyPress(event) {
                 if (event.key === 'Enter') {
                     handleSearch();
                 }
+            }
+            
+            /**
+             * Show error message
+             */
+            function showErrorMessage(message) {
+                businessCardsGrid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Error Loading Products</h3>
+                        <p>${message}</p>
+                    </div>
+                `;
             }
             
             /**
@@ -1162,7 +1273,7 @@
                 campusItems.forEach(item => {
                     item.addEventListener('click', function() {
                         const campus = this.getAttribute('data-campus');
-                        filterByCampus(campus);
+                        filterProductsByCampus(campus);
                     });
                 });
                 
@@ -1170,7 +1281,7 @@
                 chips.forEach(chip => {
                     chip.addEventListener('click', function() {
                         const campus = this.getAttribute('data-campus');
-                        filterByCampus(campus);
+                        filterProductsByCampus(campus);
                     });
                 });
                 
@@ -1180,22 +1291,12 @@
                     link.addEventListener('click', function(e) {
                         if (this.getAttribute('href') === '#') {
                             e.preventDefault();
-                            const linkText = this.textContent || this.innerText;
-                            alert(`Navigating to ${linkText}. In a real application, this would load the appropriate page.`);
+                            // In a real app, you would filter by category
+                            alert(`Filtering by category: ${this.textContent}`);
                             closeSideMenu();
                         }
                     });
                 });
-                
-                // Sell Now link in menu
-                const sellNowMenuLink = document.querySelector('.side-menu .sell-link');
-                if (sellNowMenuLink) {
-                    sellNowMenuLink.addEventListener('click', function(e) {
-                        if (this.getAttribute('href') === 'sign.html#signin-form') {
-                            closeSideMenu();
-                        }
-                    });
-                }
             }
             
             /**
@@ -1205,11 +1306,16 @@
                 console.log('Cell Noun marketplace page initialized');
                 initEventListeners();
                 
-                // Filter by default campus (ULI)
-                filterByCampus('uli');
+                // Load products from Firebase
+                loadProductsFromFirebase();
                 
-                // Add a welcome message in console
-                console.log('Welcome to Cell Noun Marketplace!');
+                // Listen for real-time updates (optional)
+                db.collection('products')
+                    .where('status', '==', 'active')
+                    .onSnapshot((snapshot) => {
+                        console.log('Products updated in real-time');
+                        loadProductsFromFirebase(); // Reload when data changes
+                    });
             }
             
             // Initialize the page

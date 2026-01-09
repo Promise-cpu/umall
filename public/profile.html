@@ -29,65 +29,63 @@
             min-height: 100vh;
         }
 
-        /* Header styles */
+        /* HEADER STYLES - EXACT MATCH TO OTHER PAGES */
         .header {
             width: 100%;
-            background-color: #2c3e50;
-            color: white;
             position: fixed;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: #2c3e50;
         }
 
+        /* Top row - Hidden on mobile, visible on desktop */
         .top-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 24px;
-            max-width: 1200px;
-            margin: 0 auto;
+            display: none;
         }
 
-        .top-left, .top-right {
-            display: flex;
-            align-items: center;
-            gap: 25px;
+        /* Top row - Show only on desktop (769px and above) */
+        @media (min-width: 769px) {
+            .top-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #2c3e50;
+                color: white;
+                padding: 12px 24px;
+                width: 100%;
+            }
+
+            .top-left {
+                display: flex;
+                gap: 24px;
+            }
+
+            .top-link {
+                color: white;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.95rem;
+                transition: color 0.3s;
+                padding: 5px 10px;
+                border-radius: 4px;
+            }
+
+            .top-link:hover {
+                color: #3498db;
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .top-link.active {
+                color: #3498db;
+            }
+
+            .slash {
+                margin: 0 5px;
+                color: #ecf0f1;
+            }
         }
 
-        .top-link {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .top-link:hover {
-            color: #3498db;
-        }
-
-        .top-link.active {
-            color: #3498db;
-        }
-
-        .top-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background-color: #3498db;
-        }
-
-        .slash {
-            color: #7f8c8d;
-            margin: 0 5px;
-        }
-
-        /* Hide header on mobile */
+        /* Hide header completely on mobile */
         @media (max-width: 768px) {
             .header {
                 display: none;
@@ -133,6 +131,18 @@
         .content-wrapper {
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        /* Adjust main content for desktop when header is visible */
+        @media (min-width: 769px) {
+            .profile-content {
+                padding-top: 120px;
+                margin-top: 60px;
+            }
+            
+            .back-container {
+                margin-top: 60px;
+            }
         }
 
         /* Page header */
@@ -836,7 +846,7 @@
                 if (userData.isLoggedIn) {
                     authLinksContainer.innerHTML = `
                         <a href="#" class="top-link" id="header-logout-link">
-                            <i class="fas fa-sign-out-alt"></i> Logout
+                            Logout
                         </a>
                     `;
                     
