@@ -4,12 +4,607 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - Cell Noun</title>
-    <link rel="stylesheet" href="CSS/header-component.css">
-    <link rel="stylesheet" href="CSS/profile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header styles */
+        .header {
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .top-left, .top-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .top-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .top-link:hover {
+            color: #3498db;
+        }
+
+        .top-link.active {
+            color: #3498db;
+        }
+
+        .top-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #3498db;
+        }
+
+        .slash {
+            color: #7f8c8d;
+            margin: 0 5px;
+        }
+
+        /* Hide header on mobile */
+        @media (max-width: 768px) {
+            .header {
+                display: none;
+            }
+        }
+
+        /* Back button */
+        .back-container {
+            background-color: #fef9f0;
+            padding: 15px 24px;
+            margin-top: 60px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background-color: white;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #f5f5f5;
+            border-color: #3498db;
+            color: #3498db;
+        }
+
+        /* Main content */
+        .profile-content {
+            flex-grow: 1;
+            background-color: white;
+            padding: 40px 24px;
+            margin-top: 60px;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Page header */
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .page-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .page-header h1 i {
+            color: #3498db;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Profile container */
+        .profile-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            min-height: 600px;
+        }
+
+        /* Sidebar styles */
+        .profile-sidebar {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+            position: sticky;
+            top: 140px;
+        }
+
+        .user-info-card {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-avatar {
+            font-size: 5rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .username {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .user-email {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            word-break: break-all;
+        }
+
+        .member-since {
+            color: #95a5a6;
+            font-size: 0.85rem;
+        }
+
+        .sidebar-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .logout-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .logout-link:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+
+        /* Main content area */
+        .profile-main {
+            background-color: white;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            overflow: hidden;
+        }
+
+        .tab-content {
+            padding: 40px;
+        }
+
+        .tab-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tab-header h2 i {
+            color: #3498db;
+        }
+
+        .tab-header p {
+            color: #666;
+            font-size: 1.05rem;
+        }
+
+        /* Form styles */
+        .profile-form {
+            max-width: 800px;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .form-section h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            color: #333;
+            transition: all 0.3s;
+            background-color: white;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group input[type="password"] {
+            padding-right: 45px;
+        }
+
+        .form-hint {
+            display: block;
+            margin-top: 6px;
+            color: #7f8c8d;
+            font-size: 0.85rem;
+        }
+
+        /* Password input with toggle */
+        .password-input {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #7f8c8d;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .toggle-password:hover {
+            color: #3498db;
+        }
+
+        /* Password strength meter */
+        .password-strength {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .strength-label {
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .strength-meter {
+            height: 6px;
+            background-color: #ecf0f1;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #e74c3c;
+            border-radius: 3px;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .strength-bar.weak {
+            width: 33%;
+            background-color: #e74c3c;
+        }
+
+        .strength-bar.medium {
+            width: 66%;
+            background-color: #f39c12;
+        }
+
+        .strength-bar.strong {
+            width: 100%;
+            background-color: #2ecc71;
+        }
+
+        .strength-text {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+        }
+
+        /* Form actions */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-cancel,
+        .btn-save {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            font-size: 1rem;
+            min-width: 120px;
+        }
+
+        .btn-cancel {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background-color: #7f8c8d;
+            transform: translateY(-2px);
+        }
+
+        .btn-save {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Footer styles */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .success-modal {
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+
+        .success-modal h3 {
+            font-family: 'Poppins', sans-serif;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .success-modal p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .btn-close-modal {
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-close-modal:hover {
+            background-color: #2980b9;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .profile-sidebar {
+                position: static;
+                height: auto;
+            }
+            
+            .tab-content {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-content {
+                padding: 30px 16px;
+                margin-top: 30px; /* Reduced because header is hidden */
+            }
+            
+            .back-container {
+                margin-top: 30px; /* Reduced because header is hidden */
+                padding: 15px 16px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn-cancel,
+            .btn-save {
+                width: 100%;
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.6rem;
+            }
+            
+            .tab-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .profile-sidebar {
+                padding: 20px;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Main container -->
@@ -17,13 +612,26 @@
         
         <!-- Header -->
         <header class="header">
-            <div id="header-component"></div>
+            <div id="header-component">
+                <div class="top-row">
+                    <div class="top-left">
+                        <a href="index.html" class="top-link">Home</a>
+                        <a href="profile.html" class="top-link active">Profile</a>
+                        <a href="manage-listing.html" class="top-link">Manage Listings</a>
+                        <a href="#" class="top-link">Safety Tips</a>
+                        <a href="#" class="top-link">Help / Support</a>
+                    </div>
+                    <div class="top-right" id="auth-links">
+                        <!-- Will be dynamically populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
         </header>
         
         <!-- Back button -->
         <div class="back-container">
             <a href="index.html" class="back-button">
-                <i class="fas fa-arrow-left"></i> Back to Marketplace
+                <i class="fas fa-arrow-left"></i> Back to Home
             </a>
         </div>
         
@@ -156,39 +764,422 @@
         </div>
     </div>
 
-    <!-- JavaScript to load header component -->
     <script>
-        // Load header component
-        function loadHeader() {
-            fetch('header-component.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-component').innerHTML = data;
-                })
-                .catch(error => {
-                    console.error('Error loading header component:', error);
-                    document.getElementById('header-component').innerHTML = `
-                        <div class="top-row">
-                            <div class="top-left">
-                                <a href="index.html" class="top-link">Home</a>
-                                <a href="profile.html" class="top-link">Profile</a>
-                                <a href="manage-listing.html" class="top-link">Manage Listings</a>
-                                <a href="#" class="top-link">Safety Tips</a>
-                                <a href="#" class="top-link">Help / Support</a>
-                            </div>
-                            <div class="top-right">
-                                <a href="sign.html#signin-page" class="top-link">Login</a>
-                                <span class="slash">/</span>
-                                <a href="sign.html#signup-page" class="top-link">Register</a>
-                            </div>
-                        </div>
+        /**
+         * Profile Page JavaScript
+         * Simplified version focusing on username, email, password, and logout
+         */
+
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // DOM Elements
+            const profileForm = document.getElementById('profile-form');
+            const usernameInput = document.getElementById('username');
+            const emailInput = document.getElementById('email');
+            const currentPasswordInput = document.getElementById('current-password');
+            const newPasswordInput = document.getElementById('new-password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+            const strengthBar = document.querySelector('.strength-bar');
+            const strengthText = document.querySelector('.strength-text');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const logoutLink = document.getElementById('logout-link');
+            const successModal = document.getElementById('success-modal');
+            const closeModalBtn = document.querySelector('.btn-close-modal');
+            const successMessage = document.getElementById('success-message');
+            const usernameDisplay = document.getElementById('username-display');
+            const emailDisplay = document.getElementById('email-display');
+            const authLinksContainer = document.getElementById('auth-links');
+            
+            // User data (in a real app, this would come from a server/database)
+            let userData = {
+                username: "John Doe",
+                email: "john.doe@student.cellnoun.edu",
+                password: "CurrentPassword123",
+                isLoggedIn: false
+            };
+            
+            /**
+             * Initialize the page
+             */
+            function init() {
+                console.log('Profile page initialized');
+                checkLoginStatus();
+                populateUserData();
+                initEventListeners();
+                updateAuthLinks();
+            }
+            
+            /**
+             * Check if user is logged in (simulating session check)
+             */
+            function checkLoginStatus() {
+                // Check localStorage for login status
+                const loggedIn = localStorage.getItem('isLoggedIn');
+                if (loggedIn === 'true') {
+                    userData.isLoggedIn = true;
+                    // Get user data from localStorage if available
+                    const savedUsername = localStorage.getItem('username');
+                    const savedEmail = localStorage.getItem('email');
+                    if (savedUsername) userData.username = savedUsername;
+                    if (savedEmail) userData.email = savedEmail;
+                }
+            }
+            
+            /**
+             * Update authentication links in header
+             */
+            function updateAuthLinks() {
+                if (!authLinksContainer) return;
+                
+                if (userData.isLoggedIn) {
+                    authLinksContainer.innerHTML = `
+                        <a href="#" class="top-link" id="header-logout-link">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
                     `;
+                    
+                    // Add event listener to header logout link
+                    const headerLogoutLink = document.getElementById('header-logout-link');
+                    if (headerLogoutLink) {
+                        headerLogoutLink.addEventListener('click', handleLogout);
+                    }
+                } else {
+                    authLinksContainer.innerHTML = `
+                        <a href="sign.html#signin-page" class="top-link">Login</a>
+                        <span class="slash">/</span>
+                        <a href="sign.html#signup-page" class="top-link">Register</a>
+                    `;
+                }
+            }
+            
+            /**
+             * Populate user data in the UI
+             */
+            function populateUserData() {
+                usernameInput.value = userData.username;
+                emailInput.value = userData.email;
+                usernameDisplay.textContent = userData.username;
+                emailDisplay.textContent = userData.email;
+            }
+            
+            /**
+             * Initialize event listeners
+             */
+            function initEventListeners() {
+                // Form submission
+                if (profileForm) {
+                    profileForm.addEventListener('submit', handleFormSubmit);
+                }
+                
+                // Cancel button
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', handleCancel);
+                }
+                
+                // Toggle password visibility
+                togglePasswordButtons.forEach(button => {
+                    button.addEventListener('click', togglePasswordVisibility);
                 });
-        }
-        
-        document.addEventListener('DOMContentLoaded', loadHeader);
+                
+                // Password strength checker
+                if (newPasswordInput) {
+                    newPasswordInput.addEventListener('input', checkPasswordStrength);
+                }
+                
+                // Logout functionality
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', handleLogout);
+                }
+                
+                // Modal close button
+                if (closeModalBtn) {
+                    closeModalBtn.addEventListener('click', closeSuccessModal);
+                }
+                
+                // Modal overlay click
+                if (successModal) {
+                    successModal.addEventListener('click', function(e) {
+                        if (e.target === successModal) {
+                            closeSuccessModal();
+                        }
+                    });
+                }
+                
+                // Escape key to close modal
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        closeSuccessModal();
+                    }
+                });
+            }
+            
+            /**
+             * Handle form submission
+             * @param {Event} e - Form submit event
+             */
+            function handleFormSubmit(e) {
+                e.preventDefault();
+                
+                const username = usernameInput.value.trim();
+                const email = emailInput.value.trim();
+                const currentPassword = currentPasswordInput.value;
+                const newPassword = newPasswordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+                
+                // Validation
+                if (!username || !email) {
+                    showError('Username and email are required.');
+                    return;
+                }
+                
+                if (!isValidEmail(email)) {
+                    showError('Please enter a valid email address.');
+                    return;
+                }
+                
+                // Check if password is being changed
+                if (currentPassword || newPassword || confirmPassword) {
+                    if (!currentPassword || !newPassword || !confirmPassword) {
+                        showError('Please fill in all password fields to change your password.');
+                        return;
+                    }
+                    
+                    // Check if current password is correct
+                    if (currentPassword !== userData.password) {
+                        showError('Current password is incorrect.');
+                        return;
+                    }
+                    
+                    // Check password strength
+                    if (!isStrongPassword(newPassword)) {
+                        showError('Password must be at least 8 characters long and contain uppercase, lowercase, and numbers.');
+                        return;
+                    }
+                    
+                    // Check if passwords match
+                    if (newPassword !== confirmPassword) {
+                        showError('New passwords do not match.');
+                        return;
+                    }
+                    
+                    // Update password
+                    userData.password = newPassword;
+                    
+                    // Clear password fields
+                    currentPasswordInput.value = '';
+                    newPasswordInput.value = '';
+                    confirmPasswordInput.value = '';
+                    strengthBar.style.width = '0%';
+                    strengthBar.className = 'strength-bar';
+                    strengthText.textContent = 'Enter a password to check strength';
+                }
+                
+                // Update user data
+                userData.username = username;
+                userData.email = email;
+                
+                // Update display in sidebar
+                usernameDisplay.textContent = username;
+                emailDisplay.textContent = email;
+                
+                // Save to localStorage
+                localStorage.setItem('username', username);
+                localStorage.setItem('email', email);
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                showSuccess('Profile updated successfully.');
+                console.log('Profile data saved:', userData);
+            }
+            
+            /**
+             * Handle cancel button click
+             */
+            function handleCancel() {
+                if (confirm('Discard changes?')) {
+                    profileForm.reset();
+                    populateUserData(); // Reset to original data
+                    
+                    // Reset password strength display
+                    strengthBar.style.width = '0%';
+                    strengthBar.className = 'strength-bar';
+                    strengthText.textContent = 'Enter a password to check strength';
+                    
+                    console.log('Changes cancelled');
+                }
+            }
+            
+            /**
+             * Toggle password visibility
+             * @param {Event} e - Click event
+             */
+            function togglePasswordVisibility(e) {
+                const targetId = e.target.closest('button').getAttribute('data-target');
+                const passwordInput = document.getElementById(targetId);
+                const icon = e.target.closest('button').querySelector('i');
+                
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            }
+            
+            /**
+             * Check password strength
+             */
+            function checkPasswordStrength() {
+                const password = newPasswordInput.value;
+                
+                if (!password) {
+                    strengthBar.style.width = '0%';
+                    strengthBar.className = 'strength-bar';
+                    strengthText.textContent = 'Enter a password to check strength';
+                    return;
+                }
+                
+                let strength = 0;
+                
+                // Check length
+                if (password.length >= 8) strength += 1;
+                
+                // Check for uppercase
+                if (/[A-Z]/.test(password)) strength += 1;
+                
+                // Check for lowercase
+                if (/[a-z]/.test(password)) strength += 1;
+                
+                // Check for numbers
+                if (/\d/.test(password)) strength += 1;
+                
+                // Check for special characters
+                if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+                
+                // Update strength bar
+                let width = 0;
+                let className = '';
+                let text = '';
+                
+                switch(strength) {
+                    case 0:
+                    case 1:
+                        width = 20;
+                        className = 'weak';
+                        text = 'Very Weak';
+                        break;
+                    case 2:
+                        width = 40;
+                        className = 'weak';
+                        text = 'Weak';
+                        break;
+                    case 3:
+                        width = 60;
+                        className = 'medium';
+                        text = 'Medium';
+                        break;
+                    case 4:
+                        width = 80;
+                        className = 'medium';
+                        text = 'Strong';
+                        break;
+                    case 5:
+                        width = 100;
+                        className = 'strong';
+                        text = 'Very Strong';
+                        break;
+                }
+                
+                strengthBar.style.width = width + '%';
+                strengthBar.className = 'strength-bar ' + className;
+                strengthText.textContent = text;
+            }
+            
+            /**
+             * Check if password is strong enough
+             * @param {string} password - Password to check
+             * @returns {boolean} True if password is strong
+             */
+            function isStrongPassword(password) {
+                return password.length >= 8 &&
+                       /[A-Z]/.test(password) &&
+                       /[a-z]/.test(password) &&
+                       /\d/.test(password);
+            }
+            
+            /**
+             * Check if email is valid
+             * @param {string} email - Email to validate
+             * @returns {boolean} True if email is valid
+             */
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+            
+            /**
+             * Show success modal
+             * @param {string} message - Success message to display
+             */
+            function showSuccess(message) {
+                if (successMessage) {
+                    successMessage.textContent = message;
+                }
+                if (successModal) {
+                    successModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            
+            /**
+             * Close success modal
+             */
+            function closeSuccessModal() {
+                if (successModal) {
+                    successModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+            
+            /**
+             * Show error message
+             * @param {string} message - Error message to display
+             */
+            function showError(message) {
+                alert(message);
+            }
+            
+            /**
+             * Handle logout
+             * @param {Event} e - Click event
+             */
+            function handleLogout(e) {
+                e.preventDefault();
+                if (confirm('Are you sure you want to logout?')) {
+                    // Clear localStorage
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('email');
+                    
+                    // Update user data
+                    userData.isLoggedIn = false;
+                    
+                    // Update header
+                    updateAuthLinks();
+                    
+                    alert('You have been logged out.');
+                    // Redirect to home page
+                    window.location.href = 'index.html';
+                }
+            }
+            
+            // Initialize the page
+            init();
+        });
     </script>
-    
-    <script src="JS/profile.js"></script>
 </body>
 </html>

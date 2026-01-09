@@ -9,732 +9,712 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-      
-      /* Reset and base styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f5f5f5;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* Header styles - Mobile Optimized */
-.header {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    z-index: 100;
-    background-color: #2c3e50;
-}
-
-/* Top row - Hidden on mobile, visible on desktop */
-.top-row {
-    display: none;
-}
-
-/* Second row with milky/cream background - Visible on both */
-.second-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fef9f0;
-    padding: 12px 16px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    min-height: 60px;
-}
-
-.menu-toggle {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #2c3e50;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
-
-/* Search bar styles - Mobile optimized */
-.search-container {
-    flex-grow: 1;
-    margin: 0 12px;
-}
-
-.search-bar {
-    display: flex;
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-#search-input {
-    flex-grow: 1;
-    padding: 12px 16px;
-    border: none;
-    font-size: 0.95rem;
-    background-color: white;
-}
-
-#search-input:focus {
-    outline: none;
-}
-
-.search-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 0 20px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-}
-
-.search-button:hover {
-    background-color: #2980b9;
-}
-
-/* Sell now button */
-.sell-now-tab {
-    display: flex;
-    align-items: center;
-}
-
-.sell-link {
-    background-color: #a07205;
-    color: white;
-    padding: 8px 16px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    transition: background-color 0.3s;
-}
-
-.sell-link:hover {
-    background-color: #ae9714;
-}
-
-/* Side menu styles - Clean and simple */
-.side-menu {
-    position: fixed;
-    top: 0;
-    left: -320px;
-    width: 280px;
-    height: 100%;
-    background-color: white;
-    box-shadow: 4px 0 15px rgba(0,0,0,0.1);
-    z-index: 1000;
-    transition: left 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-}
-
-.side-menu.active {
-    left: 0;
-}
-
-.menu-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #2c3e50;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}
-
-.menu-header h2 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.3rem;
-}
-
-.close-menu {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.3rem;
-    cursor: pointer;
-    padding: 4px;
-}
-
-/* Campus filter section - Clean design */
-.campus-filter {
-    padding: 20px;
-    border-bottom: 1px solid #eee;
-}
-
-.filter-header {
-    margin-bottom: 16px;
-}
-
-.filter-header h3 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1rem;
-    color: #2c3e50;
-    font-weight: 600;
-}
-
-.campus-list {
-    list-style: none;
-}
-
-.campus-item {
-    padding: 14px 16px;
-    margin-bottom: 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s;
-    border: 1px solid #eee;
-    font-weight: 500;
-    color: #333;
-}
-
-.campus-item:hover {
-    background-color: #f5f5f5;
-}
-
-.campus-item.active {
-    background-color: #e3f2fd;
-    border-color: #3498db;
-    color: #3498db;
-}
-
-.campus-count {
-    font-size: 0.85rem;
-    color: #7f8c8d;
-    background-color: #ecf0f1;
-    padding: 2px 8px;
-    border-radius: 12px;
-    float: right;
-}
-
-/* Category section - Clean design */
-.category-section {
-    padding: 20px;
-    flex-grow: 1;
-    border-bottom: 1px solid #eee;
-}
-
-.menu-list {
-    list-style: none;
-}
-
-.menu-item {
-    padding: 0;
-    margin-bottom: 4px;
-}
-
-.menu-item a {
-    display: block;
-    padding: 14px 16px;
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-    border-radius: 4px;
-}
-
-.menu-item a:hover {
-    background-color: #f5f5f5;
-}
-
-/* Navigation links in menu */
-.nav-section {
-    padding: 20px;
-    border-bottom: 1px solid #eee;
-}
-
-.nav-list {
-    list-style: none;
-}
-
-.nav-item {
-    padding: 0;
-    margin-bottom: 4px;
-}
-
-.nav-item a {
-    display: block;
-    padding: 14px 16px;
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-    border-radius: 4px;
-}
-
-.nav-item a:hover {
-    background-color: #f5f5f5;
-}
-
-/* Overlay styles */
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 999;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s;
-}
-
-.overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Main content styles */
-.main-content {
-    flex-grow: 1;
-    background-color: white;
-    padding: 100px 16px 40px;
-    margin-top: 60px;
-}
-
-.content-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Campus filter chips - Hidden on mobile */
-.campus-chips-container {
-    display: none;
-}
-
-/* Business cards section - Mobile optimized */
-.business-cards-section {
-    margin-bottom: 40px;
-}
-
-.section-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.6rem;
-    color: #2c3e50;
-    margin-bottom: 8px;
-}
-
-.section-subtitle {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 25px;
-}
-
-/* =========================================== */
-/* BUSINESS CARDS GRID - MOBILE FIRST (2 COLUMNS) */
-/* =========================================== */
-
-/* Base mobile layout: 2 cards per row */
-.business-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    width: 100%;
-}
-
-.business-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    border: 1px solid #eee;
-    height: 260px;
-    width: 100%;
-    min-width: 0; /* Prevent flexbox issues */
-}
-
-.business-image {
-    position: relative;
-    height: 75%;
-    overflow: hidden;
-    background: linear-gradient(135deg, #3498db, #2c3e50);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.image-placeholder {
-    font-size: 2.5rem;
-    color: white;
-}
-
-.image-placeholder.food {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-}
-
-.image-placeholder.books {
-    background: linear-gradient(135deg, #9b59b6, #8e44ad);
-}
-
-.image-placeholder.dorm {
-    background: linear-gradient(135deg, #1abc9c, #16a085);
-}
-
-.image-placeholder.online {
-    background: linear-gradient(135deg, #f39c12, #d35400);
-}
-
-.image-placeholder.lab {
-    background: linear-gradient(135deg, #34495e, #2c3e50);
-}
-
-.campus-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(44, 62, 80, 0.9);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 15px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.business-info {
-    padding: 12px;
-    height: 25%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.business-name {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    color: #2c3e50;
-    margin-bottom: 6px;
-    line-height: 1.2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.business-location {
-    font-size: 0.85rem;
-    color: #555;
-    display: flex;
-    align-items: center;
-}
-
-.business-location i {
-    color: #7f8c8d;
-    margin-right: 6px;
-    font-size: 0.8rem;
-    flex-shrink: 0;
-}
-
-.business-location span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex-grow: 1;
-}
-
-/* No results message */
-.no-results {
-    text-align: center;
-    padding: 40px 20px;
-    background-color: #f8f9fa;
-    border-radius: 12px;
-    border: 2px dashed #ddd;
-    grid-column: 1 / -1;
-}
-
-.no-results i {
-    font-size: 3rem;
-    color: #bdc3c7;
-    margin-bottom: 15px;
-}
-
-.no-results h3 {
-    font-family: 'Poppins', sans-serif;
-    color: #7f8c8d;
-    margin-bottom: 10px;
-    font-size: 1.2rem;
-}
-
-.no-results p {
-    color: #95a5a6;
-    font-size: 1rem;
-}
-
-/* Footer styles */
-.footer {
-    background-color: #2c3e50;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    margin-top: auto;
-}
-
-.footer a {
-    color: #3498db;
-    text-decoration: none;
-}
-
-.footer a:hover {
-    text-decoration: underline;
-}
-
-/* =========================================== */
-/* MEDIA QUERIES */
-/* =========================================== */
-
-/* Extra small screens (below 360px) - 1 card per row */
-@media (max-width: 359px) {
-    .business-cards-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-    
-    .business-card {
-        height: 260px;
-    }
-}
-
-/* Small mobile screens (360px to 480px) - 2 cards per row */
-@media (min-width: 360px) and (max-width: 480px) {
-    .business-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-    
-    .business-card {
-        height: 250px;
-    }
-    
-    .business-name {
-        font-size: 0.9rem;
-    }
-    
-    .business-location {
-        font-size: 0.75rem;
-    }
-    
-    .image-placeholder {
-        font-size: 2rem;
-    }
-}
-
-/* Tablet screens (481px to 768px) - 2 cards per row */
-@media (min-width: 481px) and (max-width: 768px) {
-    .business-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-    }
-    
-    .business-card {
-        height: 280px;
-    }
-    
-    .section-title {
-        font-size: 1.8rem;
-    }
-    
-    .business-name {
-        font-size: 1rem;
-    }
-    
-    .business-location {
-        font-size: 0.85rem;
-    }
-    
-    .image-placeholder {
-        font-size: 2.5rem;
-    }
-}
-
-/* Desktop styles (769px and above) */
-@media (min-width: 769px) {
-    /* Show top row on desktop */
-    .top-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #2c3e50;
-        color: white;
-        padding: 12px 24px;
-        width: 100%;
-    }
-
-    .top-left {
-        display: flex;
-        gap: 24px;
-    }
-
-    .top-link {
-        color: white;
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 0.95rem;
-        transition: color 0.3s;
-        padding: 5px 10px;
-        border-radius: 4px;
-    }
-
-    .top-link:hover {
-        color: #3498db;
-        background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .slash {
-        margin: 0 5px;
-        color: #ecf0f1;
-    }
-
-    /* Adjust second row for desktop */
-    .second-row {
-        padding: 16px 24px;
-    }
-
-    .menu-toggle {
-        font-size: 1.8rem;
-    }
-
-    .search-container {
-        max-width: 600px;
-        margin: 0 24px;
-    }
-
-    #search-input {
-        padding: 14px 20px;
-        font-size: 1rem;
-    }
-
-    .sell-link {
-        padding: 10px 20px;
-        font-size: 1rem;
-    }
-
-    /* Adjust main content for desktop */
-    .main-content {
-        padding: 140px 24px 40px;
-        margin-top: 120px;
-    }
-
-    /* Show campus chips on desktop */
-    .campus-chips-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 30px;
-    }
-
-    .chip {
-        padding: 8px 16px;
-        background-color: #ecf0f1;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.3s;
-        border: 2px solid transparent;
-    }
-
-    .chip:hover {
-        background-color: #d5dbdb;
-    }
-
-    .chip.active {
-        background-color: #3498db;
-        color: white;
-        border-color: #2980b9;
-    }
-
-    /* Desktop business cards - 4 per row */
-    .business-cards-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 24px;
-    }
-
-    .business-card {
-        height: 320px;
-    }
-
-    .business-image {
-        height: 75%;
-    }
-
-    .image-placeholder {
-        font-size: 3rem;
-    }
-
-    .business-info {
-        padding: 16px;
-    }
-
-    .business-name {
-        font-size: 1.1rem;
-    }
-    
-    .business-location {
-        font-size: 0.9rem;
-    }
-
-    .section-title {
-        font-size: 2rem;
-    }
-
-    .section-subtitle {
-        font-size: 1.1rem;
-    }
-}
-
-/* Responsive adjustments for mobile header */
-@media (max-width: 480px) {
-    .second-row {
-        padding: 10px 12px;
-    }
-
-    .search-container {
-        margin: 0 8px;
-    }
-
-    .search-bar {
-        border-radius: 20px;
-    }
-
-    #search-input {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-    }
-
-    .search-button {
-        padding: 0 16px;
-    }
-
-    .sell-link {
-        padding: 6px 12px;
-        font-size: 0.85rem;
-    }
-
-    .section-title {
-        font-size: 1.4rem;
-    }
-}
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header styles - Mobile Optimized */
+        .header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            background-color: #2c3e50;
+        }
+
+        /* Top row - Hidden on mobile, visible on desktop */
+        .top-row {
+            display: none;
+        }
+
+        /* Second row with milky/cream background - Visible on both */
+        .second-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fef9f0;
+            padding: 12px 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            min-height: 60px;
+            position: relative;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #2c3e50;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            z-index: 10;
+        }
+
+        .menu-toggle:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        /* Search bar styles - Mobile optimized */
+        .search-container {
+            flex-grow: 1;
+            margin: 0 12px;
+        }
+
+        .search-bar {
+            display: flex;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        #search-input {
+            flex-grow: 1;
+            padding: 12px 16px;
+            border: none;
+            font-size: 0.95rem;
+            background-color: white;
+        }
+
+        #search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
+        }
+
+        .search-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Sell now button - Mobile position */
+        .sell-now-tab {
+            display: flex;
+            align-items: center;
+        }
+
+        .sell-link {
+            background-color: #a07205;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .sell-link:hover {
+            background-color: #ae9714;
+            transform: translateY(-2px);
+        }
+
+        /* Side menu styles - Clean and simple */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 280px;
+            height: 100%;
+            background-color: white;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .side-menu.active {
+            left: 0;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .close-menu:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Campus filter section - Clean design */
+        .campus-filter, .category-section, .nav-section {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-header {
+            margin-bottom: 16px;
+        }
+
+        .filter-header h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .campus-list, .menu-list, .nav-list {
+            list-style: none;
+        }
+
+        .campus-item, .menu-item, .nav-item {
+            padding: 0;
+            margin-bottom: 8px;
+        }
+
+        .campus-item a, .menu-item a, .nav-item a {
+            display: block;
+            padding: 14px 16px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            border: 1px solid #eee;
+            font-weight: 500;
+            color: #333;
+            background-color: white;
+        }
+
+        .campus-item a:hover, .menu-item a:hover, .nav-item a:hover {
+            background-color: #f5f5f5;
+            border-color: #ddd;
+        }
+
+        .campus-item.active a {
+            background-color: #e3f2fd;
+            border-color: #3498db;
+            color: #3498db;
+        }
+
+        /* Remove numbers from categories and campus items */
+        .campus-count {
+            display: none;
+        }
+
+        /* Overlay styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Main content styles */
+        .main-content {
+            flex-grow: 1;
+            background-color: white;
+            padding: 100px 16px 40px;
+            margin-top: 60px;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Campus filter chips - Hidden on mobile */
+        .campus-chips-container {
+            display: none;
+        }
+
+        /* Business cards section - Mobile optimized */
+        .business-cards-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        /* =========================================== */
+        /* BUSINESS CARDS GRID - MOBILE FIRST (2 COLUMNS) */
+        /* =========================================== */
+
+        /* Base mobile layout: 2 cards per row */
+        .business-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            width: 100%;
+        }
+
+        .business-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+            height: 260px;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .business-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .business-image {
+            position: relative;
+            height: 75%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-placeholder {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .image-placeholder.food {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .image-placeholder.books {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .image-placeholder.dorm {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+        }
+
+        .image-placeholder.online {
+            background: linear-gradient(135deg, #f39c12, #d35400);
+        }
+
+        .image-placeholder.lab {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+        }
+
+        .campus-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .business-info {
+            padding: 12px;
+            height: 25%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .business-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: #2c3e50;
+            margin-bottom: 6px;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .business-location {
+            font-size: 0.85rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+
+        .business-location i {
+            color: #7f8c8d;
+            margin-right: 6px;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .business-location span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex-grow: 1;
+        }
+
+        /* No results message */
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            border: 2px dashed #ddd;
+            grid-column: 1 / -1;
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            color: #bdc3c7;
+            margin-bottom: 15px;
+        }
+
+        .no-results h3 {
+            font-family: 'Poppins', sans-serif;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .no-results p {
+            color: #95a5a6;
+            font-size: 1rem;
+        }
+
+        /* Footer styles */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================================== */
+        /* MEDIA QUERIES */
+        /* =========================================== */
+
+        /* Extra small screens (below 360px) - 1 card per row */
+        @media (max-width: 359px) {
+            .business-cards-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .business-card {
+                height: 260px;
+            }
+        }
+
+        /* Small mobile screens (360px to 480px) - 2 cards per row */
+        @media (min-width: 360px) and (max-width: 480px) {
+            .business-cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .business-card {
+                height: 250px;
+            }
+            
+            .business-name {
+                font-size: 0.9rem;
+            }
+            
+            .business-location {
+                font-size: 0.75rem;
+            }
+            
+            .image-placeholder {
+                font-size: 2rem;
+            }
+        }
+
+        /* Tablet screens (481px to 768px) - 2 cards per row */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .business-cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+            
+            .business-card {
+                height: 280px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .business-name {
+                font-size: 1rem;
+            }
+            
+            .business-location {
+                font-size: 0.85rem;
+            }
+            
+            .image-placeholder {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Desktop styles (769px and above) */
+        @media (min-width: 769px) {
+            /* Show top row on desktop */
+            .top-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #2c3e50;
+                color: white;
+                padding: 12px 24px;
+                width: 100%;
+            }
+
+            .top-left {
+                display: flex;
+                gap: 24px;
+            }
+
+            .top-link {
+                color: white;
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.95rem;
+                transition: color 0.3s;
+                padding: 5px 10px;
+                border-radius: 4px;
+            }
+
+            .top-link:hover {
+                color: #3498db;
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .slash {
+                margin: 0 5px;
+                color: #ecf0f1;
+            }
+
+            /* Adjust second row for desktop - Move Sell Now to right of search */
+            .second-row {
+                padding: 16px 24px;
+                display: grid;
+                grid-template-columns: auto 1fr auto;
+                gap: 20px;
+            }
+
+            .menu-toggle {
+                font-size: 1.8rem;
+                grid-column: 1;
+            }
+
+            .search-container {
+                max-width: 600px;
+                margin: 0;
+                grid-column: 2;
+            }
+
+            #search-input {
+                padding: 14px 20px;
+                font-size: 1rem;
+            }
+
+            /* Sell Now button positioned to the right of search bar on desktop */
+            .sell-now-tab {
+                grid-column: 3;
+            }
+
+            .sell-link {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+
+            /* Adjust main content for desktop */
+            .main-content {
+                padding: 140px 24px 40px;
+                margin-top: 120px;
+            }
+
+            /* Show campus chips on desktop */
+            .campus-chips-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 30px;
+            }
+
+            .chip {
+                padding: 8px 16px;
+                background-color: #ecf0f1;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all 0.3s;
+                border: 2px solid transparent;
+            }
+
+            .chip:hover {
+                background-color: #d5dbdb;
+            }
+
+            .chip.active {
+                background-color: #3498db;
+                color: white;
+                border-color: #2980b9;
+            }
+
+            /* Desktop business cards - 4 per row */
+            .business-cards-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 24px;
+            }
+
+            .business-card {
+                height: 320px;
+            }
+
+            .business-image {
+                height: 75%;
+            }
+
+            .image-placeholder {
+                font-size: 3rem;
+            }
+
+            .business-info {
+                padding: 16px;
+            }
+
+            .business-name {
+                font-size: 1.1rem;
+            }
+            
+            .business-location {
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .section-subtitle {
+                font-size: 1.1rem;
+            }
+
+            /* Hide Navigation section in side menu on desktop */
+            .side-menu .nav-section {
+                display: none;
+            }
+        }
+
+        /* Mobile-only: Hide top row navigation links */
+        @media (max-width: 768px) {
+            /* Show Navigation section in side menu on mobile */
+            .side-menu .nav-section {
+                display: block;
+            }
+        }
+
+        /* Responsive adjustments for mobile header */
+        @media (max-width: 480px) {
+            .second-row {
+                padding: 10px 12px;
+            }
+
+            .search-container {
+                margin: 0 8px;
+            }
+
+            .search-bar {
+                border-radius: 20px;
+            }
+
+            #search-input {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+
+            .search-button {
+                padding: 0 16px;
+            }
+
+            .sell-link {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -776,14 +756,19 @@ body {
                     </div>
                 </div>
                 
-                
+                <!-- Sell Now button - Will be positioned differently based on screen size -->
+                <div class="sell-now-tab">
+                    <a href="sign.html#signin-form" class="sell-link">
+                        Sell Now
+                    </a>
+                </div>
             </div>
         </header>
         
         <!-- Side menu panel (hidden by default) -->
         <nav id="side-menu" class="side-menu">
             <div class="menu-header">
-                <h2>Menu</h2>
+                <!-- Only close button, no menu title -->
                 <button id="close-menu" class="close-menu" aria-label="Close menu">
                     <i class="fas fa-times"></i>
                 </button>
@@ -792,7 +777,7 @@ body {
             <!-- Sell Now in Menu -->
             <div class="campus-filter">
                 <div class="menu-item">
-                    <a href="sign.html#signin-form" class="sell-link" style="display: block; text-align: center;">
+                    <a href="sign.html#signin-form" class="sell-link" style="display: block; text-align: center; background-color: #a07205; color: white; border: none;">
                         Sell Now
                     </a>
                 </div>
@@ -805,24 +790,19 @@ body {
                 </div>
                 <ul class="campus-list">
                     <li class="campus-item" data-campus="all">
-                        All Campuses
-                        <span class="campus-count">(45)</span>
+                        <a href="#">All Campuses</a>
                     </li>
                     <li class="campus-item active" data-campus="uli">
-                        ULI Campus
-                        <span class="campus-count">(18)</span>
+                        <a href="#">ULI Campus</a>
                     </li>
                     <li class="campus-item" data-campus="awka">
-                        Awka Campus
-                        <span class="campus-count">(15)</span>
+                        <a href="#">Awka Campus</a>
                     </li>
                     <li class="campus-item" data-campus="igbariam">
-                        Igbariam Campus
-                        <span class="campus-count">(12)</span>
+                        <a href="#">Igbariam Campus</a>
                     </li>
                     <li class="campus-item" data-campus="online">
-                        Online Services
-                        <span class="campus-count">(25)</span>
+                        <a href="#">Online Services</a>
                     </li>
                 </ul>
             </div>
@@ -836,44 +816,41 @@ body {
                     <li class="menu-item">
                         <a href="#">
                             Dorm and Room Materials
-                            <span class="campus-count">(23)</span>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="#">
                             Food and Snacks
-                            <span class="campus-count">(31)</span>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="#">
                             Medical/Laboratory Equipment
-                            <span class="campus-count">(12)</span>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="#">
                             Student Services
-                            <span class="campus-count">(28)</span>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="#">
                             Textbooks for Sale
-                            <span class="campus-count">(42)</span>
                         </a>
                     </li>
                     <li class="menu-item">
                         <a href="#">
                             Lodges and Accommodation
-                            <span class="campus-count">(19)</span>
                         </a>
                     </li>
                 </ul>
             </div>
             
-            <!-- Navigation links -->
+            <!-- Navigation links - Only visible on mobile -->
             <div class="nav-section">
+                <div class="filter-header">
+                    <h3>Navigation</h3>
+                </div>
                 <ul class="nav-list">
                     <li class="nav-item">
                         <a href="index.html">Home</a>
@@ -890,12 +867,16 @@ body {
                     <li class="nav-item">
                         <a href="#">Help / Support</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="sign.html#signin-page">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="sign.html#signup-page">Register</a>
+                    </li>
                 </ul>
             </div>
             
-            <div class="menu-footer">
-                <p>© 2023 Cell Noun. All rights reserved.</p>
-            </div>
+            <!-- Removed footer from side menu as requested -->
         </nav>
         
         <!-- Overlay for menu background (hidden by default) -->
@@ -1054,57 +1035,6 @@ body {
             const campusItems = document.querySelectorAll('.campus-item');
             const chips = document.querySelectorAll('.chip');
             const noResults = document.getElementById('no-results');
-            
-            // Auth state management
-            class AuthStateManager {
-                constructor() {
-                    this.isLoggedIn = false;
-                    this.currentUser = null;
-                    this.init();
-                }
-
-                init() {
-                    this.checkLoginStatus();
-                    this.updateHeader();
-                }
-
-                checkLoginStatus() {
-                    const userData = localStorage.getItem('user');
-                    if (userData) {
-                        try {
-                            this.currentUser = JSON.parse(userData);
-                            this.isLoggedIn = true;
-                        } catch (e) {
-                            console.error('Error parsing user data:', e);
-                            this.logout();
-                        }
-                    }
-                }
-
-                updateHeader() {
-                    // This would update login/register links based on auth state
-                    // For now, we'll keep it simple
-                }
-
-                login(userData) {
-                    localStorage.setItem('user', JSON.stringify(userData));
-                    this.currentUser = userData;
-                    this.isLoggedIn = true;
-                    this.updateHeader();
-                    window.dispatchEvent(new Event('userLogin'));
-                }
-
-                logout() {
-                    localStorage.removeItem('user');
-                    this.currentUser = null;
-                    this.isLoggedIn = false;
-                    this.updateHeader();
-                    window.dispatchEvent(new Event('userLogout'));
-                }
-            }
-
-            // Initialize auth state
-            const authState = new AuthStateManager();
             
             /**
              * Toggle the side menu open/close
