@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cell Noun - Campus Marketplace</title>
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
@@ -159,33 +158,33 @@
             left: 0;
         }
 
-       /* Updated menu header styles */
-.menu-header {
-    display: flex;
-    justify-content: center; /* Center the close button */
-    align-items: center;
-    padding: 20px;
-    background-color: white; /* Changed from #2c3e50 to white */
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    border-bottom: 1px solid #eee; /* Added subtle border */
-}
+        /* Updated menu header styles */
+        .menu-header {
+            display: flex;
+            justify-content: center; /* Center the close button */
+            align-items: center;
+            padding: 20px;
+            background-color: white; /* Changed from #2c3e50 to white */
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            border-bottom: 1px solid #eee; /* Added subtle border */
+        }
 
-.close-menu {
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    color: #2c3e50; /* Changed from white to match text color */
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
+        .close-menu {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #2c3e50; /* Changed from white to match text color */
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
 
-.close-menu:hover {
-    background-color: rgba(52, 152, 219, 0.1); /* Light blue hover */
-}
+        .close-menu:hover {
+            background-color: rgba(52, 152, 219, 0.1); /* Light blue hover */
+        }
 
         /* Campus filter section - Clean design */
         .campus-filter, .category-section, .nav-section {
@@ -784,8 +783,7 @@
         padding: 12px;
         border-radius: 5px;
         font-weight: bold;
-        margin-bottom: 10px;
-    }
+            }
         }
     </style>
 </head>
@@ -976,7 +974,7 @@
                             <div class="spinner"></div>
                         </div>
                         
-                        <!-- Cards will be dynamically loaded here from Firebase -->
+                        <!-- Cards will be dynamically loaded here -->
                     </div>
                 </section>
                 
@@ -995,356 +993,401 @@
     </div>
 
     <!-- JavaScript -->
-    <script>
-        // Firebase Configuration - REPLACE WITH YOUR ACTUAL CONFIG
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-
-        // Wait for DOM to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
+   <script>
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // Get DOM elements
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeMenu = document.getElementById('close-menu');
+        const sideMenu = document.getElementById('side-menu');
+        const overlay = document.getElementById('overlay');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const businessCardsGrid = document.getElementById('business-cards-grid');
+        const campusItems = document.querySelectorAll('.campus-item');
+        const chips = document.querySelectorAll('.chip');
+        const noResults = document.getElementById('no-results');
+        const sectionTitle = document.getElementById('section-title');
+        const sectionSubtitle = document.getElementById('section-subtitle');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        
+        // Global variables
+        let currentCampus = 'uli';
+        let allProducts = [];
+        
+        /**
+         * Toggle the side menu open/close
+         */
+        function toggleMenu() {
+            sideMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
             
-            // Get DOM elements
-            const menuToggle = document.getElementById('menu-toggle');
-            const closeMenu = document.getElementById('close-menu');
-            const sideMenu = document.getElementById('side-menu');
-            const overlay = document.getElementById('overlay');
-            const searchInput = document.getElementById('search-input');
-            const searchButton = document.getElementById('search-button');
-            const businessCardsGrid = document.getElementById('business-cards-grid');
-            const campusItems = document.querySelectorAll('.campus-item');
-            const chips = document.querySelectorAll('.chip');
-            const noResults = document.getElementById('no-results');
-            const sectionTitle = document.getElementById('section-title');
-            const sectionSubtitle = document.getElementById('section-subtitle');
-            const loadingSpinner = document.getElementById('loading-spinner');
-            
-            // Global variables
-            let currentCampus = 'uli';
-            let allProducts = [];
-            
-            /**
-             * Toggle the side menu open/close
-             */
-            function toggleMenu() {
-                sideMenu.classList.toggle('active');
-                overlay.classList.toggle('active');
-                
-                if (sideMenu.classList.contains('active')) {
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    document.body.style.overflow = 'auto';
-                }
-            }
-            
-            /**
-             * Close the side menu
-             */
-            function closeSideMenu() {
-                sideMenu.classList.remove('active');
-                overlay.classList.remove('active');
+            if (sideMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
                 document.body.style.overflow = 'auto';
             }
+        }
+        
+        /**
+         * Close the side menu
+         */
+        function closeSideMenu() {
+            sideMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        /**
+         * Handle search functionality
+         */
+        function handleSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
             
-            /**
-             * Handle search functionality
-             */
-            function handleSearch() {
-                const searchTerm = searchInput.value.trim().toLowerCase();
-                
-                if (searchTerm) {
-                    filterProductsBySearch(searchTerm);
-                } else {
-                    // If search is empty, show all products for current campus
-                    filterProductsByCampus(currentCampus);
-                }
+            if (searchTerm) {
+                filterProductsBySearch(searchTerm);
+            } else {
+                // If search is empty, show all products for current campus
+                filterProductsByCampus(currentCampus);
             }
+        }
+        
+        /**
+         * Filter products by search term
+         */
+        function filterProductsBySearch(searchTerm) {
+            const filteredProducts = allProducts.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.description.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm) ||
+                (product.location && product.location.toLowerCase().includes(searchTerm))
+            );
             
-            /**
-             * Filter products by search term
-             */
-            function filterProductsBySearch(searchTerm) {
-                const filteredProducts = allProducts.filter(product => 
-                    product.name.toLowerCase().includes(searchTerm) ||
-                    product.description.toLowerCase().includes(searchTerm) ||
-                    product.category.toLowerCase().includes(searchTerm) ||
-                    product.location.toLowerCase().includes(searchTerm)
-                );
-                
-                displayProducts(filteredProducts);
-                
-                // Update section title
-                sectionTitle.textContent = `Search Results for "${searchTerm}"`;
-                sectionSubtitle.textContent = `${filteredProducts.length} products found`;
-                
-                // Show/hide no results
-                if (filteredProducts.length === 0) {
-                    noResults.style.display = 'block';
-                } else {
-                    noResults.style.display = 'none';
-                }
+            displayProducts(filteredProducts);
+            
+            // Update section title
+            sectionTitle.textContent = `Search Results for "${searchTerm}"`;
+            sectionSubtitle.textContent = `${filteredProducts.length} products found`;
+            
+            // Show/hide no results
+            if (filteredProducts.length === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
             }
-            
-            /**
-             * Load products from Firebase
-             */
-            async function loadProductsFromFirebase() {
-                try {
-                    loadingSpinner.style.display = 'flex';
-                    
-                    const productsRef = db.collection('products');
-                    const snapshot = await productsRef.where('status', '==', 'active').get();
-                    
+        }
+        
+        /**
+         * Load products from localStorage
+         */
+        function loadProductsFromLocalStorage() {
+            try {
+                loadingSpinner.style.display = 'flex';
+                
+                // Get products from localStorage
+                const savedProducts = localStorage.getItem('marketplaceListings');
+                
+                if (savedProducts) {
+                    allProducts = JSON.parse(savedProducts);
+                    console.log(`Loaded ${allProducts.length} products from localStorage`);
+                } else {
                     allProducts = [];
-                    snapshot.forEach(doc => {
-                        const product = {
-                            id: doc.id,
-                            ...doc.data()
-                        };
-                        allProducts.push(product);
-                    });
-                    
-                    console.log(`Loaded ${allProducts.length} products from Firebase`);
-                    
-                    // Filter by default campus
-                    filterProductsByCampus(currentCampus);
-                    
-                } catch (error) {
-                    console.error('Error loading products:', error);
-                    showErrorMessage('Failed to load products. Please try again.');
-                } finally {
-                    loadingSpinner.style.display = 'none';
-                }
-            }
-            
-            /**
-             * Filter products by campus
-             */
-            function filterProductsByCampus(campus) {
-                currentCampus = campus;
-                
-                const filteredProducts = campus === 'all' 
-                    ? allProducts 
-                    : allProducts.filter(product => product.campus === campus);
-                
-                displayProducts(filteredProducts);
-                
-                // Update section title
-                updateSectionTitle(campus, filteredProducts.length);
-                
-                // Update active state for campus items
-                updateCampusActiveState(campus);
-                
-                // Show/hide no results
-                if (filteredProducts.length === 0) {
-                    noResults.style.display = 'block';
-                } else {
-                    noResults.style.display = 'none';
+                    console.log('No products found in localStorage');
                 }
                 
-                // Close menu on mobile after selection
-                if (window.innerWidth <= 768) {
-                    closeSideMenu();
-                }
+                // Filter by default campus
+                filterProductsByCampus(currentCampus);
+                
+            } catch (error) {
+                console.error('Error loading products:', error);
+                showErrorMessage('Failed to load products. Please try again.');
+                allProducts = [];
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+        
+        /**
+         * Filter products by campus
+         */
+        function filterProductsByCampus(campus) {
+            currentCampus = campus;
+            
+            const filteredProducts = campus === 'all' 
+                ? allProducts 
+                : allProducts.filter(product => product.campus === campus);
+            
+            displayProducts(filteredProducts);
+            
+            // Update section title
+            updateSectionTitle(campus, filteredProducts.length);
+            
+            // Update active state for campus items
+            updateCampusActiveState(campus);
+            
+            // Show/hide no results
+            if (filteredProducts.length === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
             }
             
-            /**
-             * Display products in the grid
-             */
-            function displayProducts(products) {
-                businessCardsGrid.innerHTML = '';
-                
-                products.forEach(product => {
-                    const card = createProductCard(product);
-                    businessCardsGrid.appendChild(card);
-                });
+            // Close menu on mobile after selection
+            if (window.innerWidth <= 768) {
+                closeSideMenu();
+            }
+        }
+        
+        /**
+         * Display products in the grid
+         */
+        function displayProducts(products) {
+            businessCardsGrid.innerHTML = '';
+            
+            if (products.length === 0) {
+                noResults.style.display = 'block';
+                return;
             }
             
-            /**
-             * Create a product card element
-             */
-            function createProductCard(product) {
-                const card = document.createElement('a');
-                card.href = `display.html?id=${product.id}`;
-                card.className = 'business-card';
-                card.setAttribute('data-campus', product.campus);
-                
-                // Get icon and color based on category
-                const { icon, colorClass } = getCategoryIcon(product.category);
-                
-                card.innerHTML = `
-                    <div class="business-image">
-                        <div class="image-placeholder ${colorClass}">
+            noResults.style.display = 'none';
+            
+            products.forEach(product => {
+                const card = createProductCard(product);
+                businessCardsGrid.appendChild(card);
+            });
+        }
+        
+        /**
+         * Create a product card element
+         */
+        function createProductCard(product) {
+            const card = document.createElement('a');
+            card.href = `display.html?id=${product.id}`;
+            card.className = 'business-card';
+            card.setAttribute('data-campus', product.campus);
+            
+            // Get icon and color based on category
+            const { icon, colorClass } = getCategoryIcon(product.category);
+            
+            // Check if product has a cover photo
+            const hasCoverPhoto = product.coverPhoto && product.coverPhoto.startsWith('data:image');
+            
+            card.innerHTML = `
+                <div class="business-image">
+                    ${hasCoverPhoto 
+                        ? `<img src="${product.coverPhoto}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;">`
+                        : `<div class="image-placeholder ${colorClass}">
                             <i class="${icon}"></i>
-                        </div>
-                        <div class="campus-badge">${product.campus.toUpperCase()}</div>
-                        ${product.category ? `<div class="category-badge">${product.category}</div>` : ''}
+                        </div>`
+                    }
+                    <div class="campus-badge">${product.campus.toUpperCase()}</div>
+                    ${product.category ? `<div class="category-badge">${product.category}</div>` : ''}
+                </div>
+                <div class="business-info">
+                    <h3 class="business-name">${product.name}</h3>
+                    ${product.price ? `<div class="business-price">${formatPrice(product.price)}</div>` : ''}
+                    <div class="business-location">
+                        <i class="fas fa-map-pin"></i>
+                        <span>${product.location || 'Campus Location'}</span>
                     </div>
-                    <div class="business-info">
-                        <h3 class="business-name">${product.name}</h3>
-                        ${product.price ? `<div class="business-price">₦${parseFloat(product.price).toLocaleString()}</div>` : ''}
-                        <div class="business-location">
-                            <i class="fas fa-map-pin"></i>
-                            <span>${product.location || 'Campus Location'}</span>
-                        </div>
-                    </div>
-                `;
-                
-                return card;
-            }
+                </div>
+            `;
             
-            /**
-             * Get icon and color class based on category
-             */
-            function getCategoryIcon(category) {
-                const categories = {
-                    'Food and Snacks': { icon: 'fas fa-utensils', colorClass: 'food' },
-                    'Textbooks for Sale': { icon: 'fas fa-book', colorClass: 'books' },
-                    'Dorm and Room Materials': { icon: 'fas fa-bed', colorClass: 'dorm' },
-                    'Medical/Laboratory Equipment': { icon: 'fas fa-flask', colorClass: 'lab' },
-                    'Student Services': { icon: 'fas fa-laptop', colorClass: 'online' },
-                    'Lodges and Accommodation': { icon: 'fas fa-hotel', colorClass: 'dorm' }
-                };
-                
-                return categories[category] || { icon: 'fas fa-store', colorClass: '' };
+            return card;
+        }
+        
+        /**
+         * Format price for display
+         */
+        function formatPrice(price) {
+            if (!price) return '';
+            // Check if price already starts with ₦
+            if (price.startsWith('₦')) {
+                return price;
             }
+            // Add ₦ if it's a number
+            const numericPrice = price.replace(/[^\d.]/g, '');
+            const num = parseFloat(numericPrice);
+            if (isNaN(num)) return price;
+            return `₦${num.toLocaleString()}`;
+        }
+        
+        /**
+         * Get icon and color class based on category
+         */
+        function getCategoryIcon(category) {
+            const categories = {
+                'Food and Snacks': { icon: 'fas fa-utensils', colorClass: 'food' },
+                'Textbooks for Sale': { icon: 'fas fa-book', colorClass: 'books' },
+                'Dorm and Room Materials': { icon: 'fas fa-bed', colorClass: 'dorm' },
+                'Medical/Laboratory Equipment': { icon: 'fas fa-flask', colorClass: 'lab' },
+                'Student Services': { icon: 'fas fa-laptop', colorClass: 'online' },
+                'Lodges and Accommodation': { icon: 'fas fa-hotel', colorClass: 'dorm' },
+                'Food & Snacks': { icon: 'fas fa-utensils', colorClass: 'food' },
+                'Textbooks & Stationery': { icon: 'fas fa-book', colorClass: 'books' },
+                'Dorm Essentials': { icon: 'fas fa-bed', colorClass: 'dorm' },
+                'Lab Equipment': { icon: 'fas fa-flask', colorClass: 'lab' },
+                'Accommodation': { icon: 'fas fa-hotel', colorClass: 'dorm' },
+                'Electronics & Gadgets': { icon: 'fas fa-laptop', colorClass: 'online' },
+                'Fashion & Clothing': { icon: 'fas fa-tshirt', colorClass: 'online' },
+                'Health & Wellness': { icon: 'fas fa-heartbeat', colorClass: 'lab' },
+                'Other': { icon: 'fas fa-store', colorClass: '' }
+            };
             
-            /**
-             * Update section title based on campus
-             */
-            function updateSectionTitle(campus, count) {
-                if (campus === 'all') {
-                    sectionTitle.textContent = 'All Products';
-                    sectionSubtitle.textContent = `${count} products available across all campuses`;
-                } else {
-                    const campusName = campus.toUpperCase();
-                    sectionTitle.textContent = `Products in ${campusName} Campus`;
-                    sectionSubtitle.textContent = `${count} products available`;
+            return categories[category] || { icon: 'fas fa-store', colorClass: '' };
+        }
+        
+        /**
+         * Update section title based on campus
+         */
+        function updateSectionTitle(campus, count) {
+            if (campus === 'all') {
+                sectionTitle.textContent = 'All Products';
+                sectionSubtitle.textContent = `${count} products available across all campuses`;
+            } else {
+                const campusName = getCampusDisplayName(campus);
+                sectionTitle.textContent = `Products in ${campusName} Campus`;
+                sectionSubtitle.textContent = `${count} products available`;
+            }
+        }
+        
+        /**
+         * Get display name for campus
+         */
+        function getCampusDisplayName(campus) {
+            const campusNames = {
+                'uli': 'ULI',
+                'awka': 'Awka',
+                'igbariam': 'Igbariam',
+                'online': 'Online'
+            };
+            return campusNames[campus] || campus.toUpperCase();
+        }
+        
+        /**
+         * Update active state for campus filter
+         */
+        function updateCampusActiveState(campus) {
+            // Update side menu items
+            campusItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-campus') === campus) {
+                    item.classList.add('active');
                 }
-            }
+            });
             
-            /**
-             * Update active state for campus filter
-             */
-            function updateCampusActiveState(campus) {
-                // Update side menu items
-                campusItems.forEach(item => {
-                    item.classList.remove('active');
-                    if (item.getAttribute('data-campus') === campus) {
-                        item.classList.add('active');
+            // Update chips (desktop)
+            chips.forEach(chip => {
+                chip.classList.remove('active');
+                if (chip.getAttribute('data-campus') === campus) {
+                    chip.classList.add('active');
+                }
+            });
+        }
+        
+        /**
+         * Handle keyboard events for search
+         */
+        function handleSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                handleSearch();
+            }
+        }
+        
+        /**
+         * Show error message
+         */
+        function showErrorMessage(message) {
+            businessCardsGrid.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Error Loading Products</h3>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+        
+        /**
+         * Listen for storage events (when new listings are added from listings page)
+         */
+        function setupStorageListener() {
+            window.addEventListener('storage', function(event) {
+                if (event.key === 'marketplaceListings') {
+                    console.log('Storage updated, reloading products...');
+                    loadProductsFromLocalStorage();
+                }
+            });
+            
+            // Also listen for custom events within the same page
+            window.addEventListener('newListingAdded', function() {
+                console.log('New listing added via custom event');
+                loadProductsFromLocalStorage();
+            });
+        }
+        
+        /**
+         * Initialize event listeners
+         */
+        function initEventListeners() {
+            // Menu toggle button
+            menuToggle.addEventListener('click', toggleMenu);
+            
+            // Close menu button
+            closeMenu.addEventListener('click', closeSideMenu);
+            
+            // Overlay click to close menu
+            overlay.addEventListener('click', closeSideMenu);
+            
+            // Search functionality
+            searchButton.addEventListener('click', handleSearch);
+            searchInput.addEventListener('keypress', handleSearchKeyPress);
+            
+            // Campus filter items in side menu
+            campusItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const campus = this.getAttribute('data-campus');
+                    filterProductsByCampus(campus);
+                });
+            });
+            
+            // Campus filter chips (desktop only)
+            chips.forEach(chip => {
+                chip.addEventListener('click', function() {
+                    const campus = this.getAttribute('data-campus');
+                    filterProductsByCampus(campus);
+                });
+            });
+            
+            // Menu navigation links
+            const menuLinks = document.querySelectorAll('.menu-item a, .nav-item a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                        // In a real app, you would filter by category
+                        alert(`Filtering by category: ${this.textContent}`);
+                        closeSideMenu();
                     }
                 });
-                
-                // Update chips (desktop)
-                chips.forEach(chip => {
-                    chip.classList.remove('active');
-                    if (chip.getAttribute('data-campus') === campus) {
-                        chip.classList.add('active');
-                    }
-                });
-            }
+            });
+        }
+        
+        /**
+         * Initialize the page
+         */
+        function init() {
+            console.log('Cell Noun marketplace page initialized');
+            initEventListeners();
+            setupStorageListener();
             
-            /**
-             * Handle keyboard events for search
-             */
-            function handleSearchKeyPress(event) {
-                if (event.key === 'Enter') {
-                    handleSearch();
-                }
-            }
-            
-            /**
-             * Show error message
-             */
-            function showErrorMessage(message) {
-                businessCardsGrid.innerHTML = `
-                    <div class="no-results">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>Error Loading Products</h3>
-                        <p>${message}</p>
-                    </div>
-                `;
-            }
-            
-            /**
-             * Initialize event listeners
-             */
-            function initEventListeners() {
-                // Menu toggle button
-                menuToggle.addEventListener('click', toggleMenu);
-                
-                // Close menu button
-                closeMenu.addEventListener('click', closeSideMenu);
-                
-                // Overlay click to close menu
-                overlay.addEventListener('click', closeSideMenu);
-                
-                // Search functionality
-                searchButton.addEventListener('click', handleSearch);
-                searchInput.addEventListener('keypress', handleSearchKeyPress);
-                
-                // Campus filter items in side menu
-                campusItems.forEach(item => {
-                    item.addEventListener('click', function() {
-                        const campus = this.getAttribute('data-campus');
-                        filterProductsByCampus(campus);
-                    });
-                });
-                
-                // Campus filter chips (desktop only)
-                chips.forEach(chip => {
-                    chip.addEventListener('click', function() {
-                        const campus = this.getAttribute('data-campus');
-                        filterProductsByCampus(campus);
-                    });
-                });
-                
-                // Menu navigation links
-                const menuLinks = document.querySelectorAll('.menu-item a, .nav-item a');
-                menuLinks.forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        if (this.getAttribute('href') === '#') {
-                            e.preventDefault();
-                            // In a real app, you would filter by category
-                            alert(`Filtering by category: ${this.textContent}`);
-                            closeSideMenu();
-                        }
-                    });
-                });
-            }
-            
-            /**
-             * Initialize the page
-             */
-            function init() {
-                console.log('Cell Noun marketplace page initialized');
-                initEventListeners();
-                
-                // Load products from Firebase
-                loadProductsFromFirebase();
-                
-                // Listen for real-time updates (optional)
-                db.collection('products')
-                    .where('status', '==', 'active')
-                    .onSnapshot((snapshot) => {
-                        console.log('Products updated in real-time');
-                        loadProductsFromFirebase(); // Reload when data changes
-                    });
-            }
-            
-            // Initialize the page
-            init();
-        });
-    </script>
+            // Load products from localStorage
+            loadProductsFromLocalStorage();
+        }
+        
+        // Initialize the page
+        init();
+    });
+</script>
 </body>
 </html>

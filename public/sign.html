@@ -153,6 +153,8 @@
         }
 
         /* BACK NAVIGATION */
+
+        
         .back-arrow {
             padding: 20px 24px;
             position: absolute;
@@ -187,19 +189,83 @@
 
         .back-link:focus-visible {
             border-color: var(--primary-color);
+        
         }
+
+        /* BACK NAVIGATION - UPDATED */
+.back-container {
+    background-color: #fef9f0;
+    padding: 15px 24px;
+    margin-top: 60px;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #2c3e50;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background-color: white;
+    border: 1px solid #ddd;
+    transition: all var(--transition-speed) ease;
+}
+
+.back-button:hover {
+    background-color: #f5f5f5;
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+    transform: translateX(-5px);
+}
+
+/* Adjust for mobile */
+@media (max-width: 768px) {
+    .back-container {
+        padding: 16px;
+        margin-top: 20px;
+    }
+    
+    .back-button {
+        padding: 10px;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        justify-content: center;
+        min-width: 40px;
+    }
+    
+    .back-button span {
+        display: none;
+    }
+}
+
+/* Adjust for desktop when header is visible */
+@media (min-width: 769px) {
+    .back-container {
+        margin-top: 60px; /* Same as profile page */
+    }
+    
+    .auth-main {
+        padding-top: 140px; /* Increased to account for header + back container */
+    }
+}
 
         /* AUTHENTICATION SECTION */
         .auth-main {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 24px;
-            min-height: calc(100vh - 150px);
-            width: 100%;
-            position: relative;
-        }
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    min-height: calc(100vh - 150px);
+    width: 100%;
+    position: relative;
+    padding-top: 120px; /* Add this line for desktop */
+}
 
         .auth-page {
             display: none;
@@ -865,13 +931,13 @@
             </div>
         </header>
 
+        <!-- BACK NAVIGATION -->
         <div class="fullscreen-container">
-            <div class="back-arrow">
-                <a href="index.html" class="back-link" aria-label="Back to home">
-                    <i class="fas fa-arrow-left"></i>
-                    <span>Back to Home</span>
-                </a>
-            </div>
+            <div class="back-container">
+    <a href="index.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+</div>
             
             <main class="auth-main" role="main">
                 <!-- Sign In -->

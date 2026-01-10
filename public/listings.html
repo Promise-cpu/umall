@@ -7,7 +7,6 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -304,7 +303,7 @@
             border: 1px solid #e0e0e0;
         }
 
-        /* Upload Area */
+        /* Upload Area - EXACTLY AS IN ORIGINAL DESIGN */
         .upload-area {
             border: 3px dashed #ddd;
             border-radius: 12px;
@@ -931,6 +930,14 @@
                             <input type="text" id="businessPrice" name="businessPrice" placeholder="e.g., ₦5,000 or Starting from ₦2,500">
                         </div>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="businessLocation">Specific Location (Optional)</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-map-pin"></i>
+                            <input type="text" id="businessLocation" name="businessLocation" placeholder="e.g., Block A, Room 101 or Near Library">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Contact Information Section -->
@@ -971,7 +978,7 @@
                     </div>
                 </div>
 
-                <!-- Photo Upload Section -->
+                <!-- Photo Upload Section - EXACTLY AS IN ORIGINAL DESIGN -->
                 <div class="form-section">
                     <h2><i class="fas fa-images"></i> Business Photos</h2>
                     
@@ -987,7 +994,7 @@
                                 <p>Upload Cover Photo</p>
                                 <p class="upload-hint">Drag & drop or click to browse</p>
                             </div>
-                            <input type="file" id="coverPhotoUpload" name="coverPhoto" accept=".jpg,.jpeg,.png,.gif" class="file-input" required>
+                            <input type="file" id="coverPhotoUpload" name="coverPhoto" accept=".jpg,.jpeg,.png,.gif" class="file-input">
                         </div>
                         <div class="uploaded-files" id="coverPhotoPreview"></div>
                         <div class="error-message" id="coverPhoto-error"></div>
@@ -1059,10 +1066,10 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <h2>Business Listed Successfully!</h2>
-                <p>Your business is now live on U-Mall Marketplace.</p>
+                <p>Your business is now live on U-Mall Marketplace. It will appear on the homepage immediately.</p>
                 <div class="success-actions">
                     <a href="index.html" class="success-btn">View on Homepage</a>
-                    <a href="manage-listing.html" class="success-btn">Manage Business</a>
+                    <button id="addAnotherBtn" class="success-btn">Add Another Business</button>
                 </div>
             </div>
         </div>
@@ -1082,591 +1089,567 @@
 
     <!-- JavaScript -->
     <script>
-        // Firebase Configuration - REPLACE WITH YOUR ACTUAL CONFIG
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+    // Configuration - Using localStorage for data persistence
+    const APP_CONFIG = {
+        localStorageKey: 'marketplaceListings'
+    };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-        const auth = firebase.auth();
-
-        // Listings Page JavaScript
-        document.addEventListener('DOMContentLoaded', function() {
+    // Listings Page JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // DOM Elements
+        const listingForm = document.getElementById('listingForm');
+        const businessNameInput = document.getElementById('businessName');
+        const businessDescriptionInput = document.getElementById('businessDescription');
+        const businessCategorySelect = document.getElementById('businessCategory');
+        const campusLocationSelect = document.getElementById('campusLocation');
+        const businessPriceInput = document.getElementById('businessPrice');
+        const businessLocationInput = document.getElementById('businessLocation');
+        const contactLinkInput = document.getElementById('contactLink');
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        const emailAddressInput = document.getElementById('emailAddress');
+        const businessHoursInput = document.getElementById('businessHours');
+        const contactInfoInput = document.getElementById('contactInfo');
+        const coverPhotoUpload = document.getElementById('coverPhotoUpload');
+        const additionalPhotosUpload = document.getElementById('additionalPhotosUpload');
+        const coverPhotoUploadArea = document.getElementById('coverPhotoUploadArea');
+        const additionalPhotosUploadArea = document.getElementById('additionalPhotosUploadArea');
+        const coverPhotoPreview = document.getElementById('coverPhotoPreview');
+        const additionalPhotosPreview = document.getElementById('additionalPhotosPreview');
+        const descCharCount = document.getElementById('desc-char-count');
+        const termsCheckbox = document.getElementById('listingTerms');
+        const submitBtn = document.getElementById('submitBtn');
+        const successModal = document.getElementById('successModal');
+        const addAnotherBtn = document.getElementById('addAnotherBtn');
+        
+        // Uploaded files storage
+        let coverPhoto = null;
+        let additionalPhotos = [];
+        
+        /**
+         * Initialize the page
+         */
+        function init() {
+            console.log('Listings page initialized');
+            initEventListeners();
+        }
+        
+        /**
+         * Initialize event listeners
+         */
+        function initEventListeners() {
+            // Form submission
+            listingForm.addEventListener('submit', handleFormSubmit);
             
-            // DOM Elements
-            const listingForm = document.getElementById('listingForm');
-            const businessNameInput = document.getElementById('businessName');
-            const businessDescriptionInput = document.getElementById('businessDescription');
-            const businessCategorySelect = document.getElementById('businessCategory');
-            const campusLocationSelect = document.getElementById('campusLocation');
-            const businessPriceInput = document.getElementById('businessPrice');
-            const contactLinkInput = document.getElementById('contactLink');
-            const phoneNumberInput = document.getElementById('phoneNumber');
-            const emailAddressInput = document.getElementById('emailAddress');
-            const businessHoursInput = document.getElementById('businessHours');
-            const contactInfoInput = document.getElementById('contactInfo');
-            const coverPhotoUpload = document.getElementById('coverPhotoUpload');
-            const additionalPhotosUpload = document.getElementById('additionalPhotosUpload');
-            const coverPhotoUploadArea = document.getElementById('coverPhotoUploadArea');
-            const additionalPhotosUploadArea = document.getElementById('additionalPhotosUploadArea');
-            const coverPhotoPreview = document.getElementById('coverPhotoPreview');
-            const additionalPhotosPreview = document.getElementById('additionalPhotosPreview');
-            const descCharCount = document.getElementById('desc-char-count');
-            const termsCheckbox = document.getElementById('listingTerms');
-            const submitBtn = document.getElementById('submitBtn');
-            const successModal = document.getElementById('successModal');
+            // Character count for description
+            businessDescriptionInput.addEventListener('input', updateCharCount);
             
-            // Uploaded files storage
-            let coverPhoto = null;
-            let additionalPhotos = [];
+            // Cover photo upload
+            coverPhotoUpload.addEventListener('change', handleCoverPhotoUpload);
+            setupDragAndDrop(coverPhotoUploadArea, handleCoverPhotoUpload);
             
-            /**
-             * Initialize the page
-             */
-            function init() {
-                console.log('Listings page initialized');
-                initEventListeners();
-                // You can add authentication check here if needed
+            // Additional photos upload
+            additionalPhotosUpload.addEventListener('change', handleAdditionalPhotosUpload);
+            setupDragAndDrop(additionalPhotosUploadArea, handleAdditionalPhotosUpload);
+            
+            // Terms checkbox
+            termsCheckbox.addEventListener('change', validateForm);
+            
+            // Input validation on change
+            const requiredInputs = [
+                businessNameInput,
+                businessDescriptionInput,
+                businessCategorySelect,
+                campusLocationSelect,
+                contactLinkInput
+            ];
+            
+            requiredInputs.forEach(input => {
+                input.addEventListener('change', validateForm);
+                if (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA') {
+                    input.addEventListener('input', validateForm);
+                }
+            });
+            
+            // Add another business button
+            addAnotherBtn.addEventListener('click', function() {
+                successModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                resetForm();
+            });
+        }
+        
+        /**
+         * Update character count for description
+         */
+        function updateCharCount() {
+            const count = businessDescriptionInput.value.length;
+            descCharCount.textContent = count;
+        }
+        
+        /**
+         * Setup drag and drop for upload areas
+         */
+        function setupDragAndDrop(uploadArea, callback) {
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            // Highlight drop area
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            // Handle drop
+            uploadArea.addEventListener('drop', handleDrop, false);
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
             }
             
-            /**
-             * Initialize event listeners
-             */
-            function initEventListeners() {
-                // Form submission
-                listingForm.addEventListener('submit', handleFormSubmit);
-                
-                // Character count for description
-                businessDescriptionInput.addEventListener('input', updateCharCount);
-                
-                // Cover photo upload
-                coverPhotoUpload.addEventListener('change', handleCoverPhotoUpload);
-                setupDragAndDrop(coverPhotoUploadArea, handleCoverPhotoUpload);
-                
-                // Additional photos upload
-                additionalPhotosUpload.addEventListener('change', handleAdditionalPhotosUpload);
-                setupDragAndDrop(additionalPhotosUploadArea, handleAdditionalPhotosUpload);
-                
-                // Terms checkbox
-                termsCheckbox.addEventListener('change', validateForm);
-                
-                // Input validation on change
-                const requiredInputs = [
-                    businessNameInput,
-                    businessDescriptionInput,
-                    businessCategorySelect,
-                    campusLocationSelect,
-                    contactLinkInput,
-                    coverPhotoUpload
-                ];
-                
-                requiredInputs.forEach(input => {
-                    input.addEventListener('change', validateForm);
-                    if (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA') {
-                        input.addEventListener('input', validateForm);
-                    }
-                });
-                
-                // Header menu toggle (for consistency)
-                const menuToggle = document.getElementById('menu-toggle');
-                const searchButton = document.getElementById('search-button');
-                
-                if (menuToggle) {
-                    menuToggle.addEventListener('click', function() {
-                        alert('Menu functionality - In a full implementation, this would open the side menu');
-                    });
-                }
-                
-                if (searchButton) {
-                    searchButton.addEventListener('click', function() {
-                        const searchInput = document.getElementById('search-input');
-                        if (searchInput.value.trim()) {
-                            alert('Search functionality - This would search the marketplace');
-                        }
-                    });
-                }
+            function highlight() {
+                uploadArea.classList.add('drag-over');
             }
             
-            /**
-             * Update character count for description
-             */
-            function updateCharCount() {
-                const count = businessDescriptionInput.value.length;
-                descCharCount.textContent = count;
+            function unhighlight() {
+                uploadArea.classList.remove('drag-over');
             }
             
-            /**
-             * Setup drag and drop for upload areas
-             */
-            function setupDragAndDrop(uploadArea, callback) {
-                // Prevent default drag behaviors
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                    uploadArea.addEventListener(eventName, preventDefaults, false);
-                });
-                
-                // Highlight drop area
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    uploadArea.addEventListener(eventName, highlight, false);
-                });
-                
-                ['dragleave', 'drop'].forEach(eventName => {
-                    uploadArea.addEventListener(eventName, unhighlight, false);
-                });
-                
-                // Handle drop
-                uploadArea.addEventListener('drop', handleDrop, false);
-                
-                function preventDefaults(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                
-                function highlight() {
-                    uploadArea.classList.add('drag-over');
-                }
-                
-                function unhighlight() {
-                    uploadArea.classList.remove('drag-over');
-                }
-                
-                function handleDrop(e) {
-                    const dt = e.dataTransfer;
-                    const files = dt.files;
-                    const event = { target: { files } };
-                    callback(event);
-                }
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                const event = { target: { files } };
+                callback(event);
+            }
+        }
+        
+        /**
+         * Handle cover photo upload
+         */
+        function handleCoverPhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Validate file
+            if (!validateImageFile(file)) {
+                showError('coverPhoto-error', 'Please upload a valid image file (JPG, PNG, GIF)');
+                return;
             }
             
-            /**
-             * Handle cover photo upload
-             */
-            function handleCoverPhotoUpload(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                // Validate file
-                if (!validateImageFile(file)) {
-                    showError('coverPhoto-error', 'Please upload a valid image file (JPG, PNG, GIF) under 2MB');
-                    return;
-                }
-                
-                // Clear any previous error
-                clearError('coverPhoto-error');
-                
-                // Read and preview image
+            // Clear any previous error
+            clearError('coverPhoto-error');
+            
+            // Read and preview image
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                coverPhoto = {
+                    dataUrl: e.target.result,
+                    name: file.name,
+                    type: file.type
+                };
+                displayCoverPhotoPreview();
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        /**
+         * Handle additional photos upload
+         */
+        function handleAdditionalPhotosUpload(e) {
+            const files = Array.from(e.target.files);
+            
+            // Validate files
+            const validFiles = files.filter(file => validateImageFile(file));
+            
+            // Limit to 3 files
+            const remainingSlots = 3 - additionalPhotos.length;
+            const filesToAdd = validFiles.slice(0, remainingSlots);
+            
+            if (filesToAdd.length < files.length) {
+                showError('additionalPhotos-error', `Only ${remainingSlots} more photos allowed (max 3 total)`);
+            }
+            
+            // Read and preview each image
+            filesToAdd.forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    coverPhoto = {
-                        file: file,
+                    additionalPhotos.push({
                         dataUrl: e.target.result,
-                        name: file.name
-                    };
-                    displayCoverPhotoPreview();
+                        name: file.name,
+                        type: file.type
+                    });
+                    displayAdditionalPhotosPreview();
                 };
                 reader.readAsDataURL(file);
+            });
+            
+            // Clear input for new selections
+            additionalPhotosUpload.value = '';
+        }
+        
+        /**
+         * Validate image file
+         */
+        function validateImageFile(file) {
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            
+            if (!validTypes.includes(file.type)) {
+                return false;
             }
             
-            /**
-             * Handle additional photos upload
-             */
-            function handleAdditionalPhotosUpload(e) {
-                const files = Array.from(e.target.files);
-                
-                // Validate files
-                const validFiles = files.filter(file => validateImageFile(file));
-                
-                // Limit to 3 files
-                const remainingSlots = 3 - additionalPhotos.length;
-                const filesToAdd = validFiles.slice(0, remainingSlots);
-                
-                if (filesToAdd.length < files.length) {
-                    showError('additionalPhotos-error', `Only ${remainingSlots} more photos allowed (max 3 total)`);
-                }
-                
-                // Read and preview each image
-                filesToAdd.forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        additionalPhotos.push({
-                            file: file,
-                            dataUrl: e.target.result,
-                            name: file.name
-                        });
-                        displayAdditionalPhotosPreview();
-                    };
-                    reader.readAsDataURL(file);
-                });
-                
-                // Clear input for new selections
-                additionalPhotosUpload.value = '';
+            if (file.size > maxSize) {
+                return false;
             }
             
-            /**
-             * Validate image file
-             */
-            function validateImageFile(file) {
-                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-                const maxSize = 2 * 1024 * 1024; // 2MB
-                
-                if (!validTypes.includes(file.type)) {
-                    return false;
-                }
-                
-                if (file.size > maxSize) {
-                    return false;
-                }
-                
-                return true;
-            }
+            return true;
+        }
+        
+        /**
+         * Display cover photo preview
+         */
+        function displayCoverPhotoPreview() {
+            coverPhotoPreview.innerHTML = '';
             
-            /**
-             * Display cover photo preview
-             */
-            function displayCoverPhotoPreview() {
-                coverPhotoPreview.innerHTML = '';
-                
-                if (!coverPhoto) return;
-                
+            if (!coverPhoto) return;
+            
+            const preview = document.createElement('div');
+            preview.className = 'file-preview';
+            preview.innerHTML = `
+                <img src="${coverPhoto.dataUrl}" alt="Cover photo preview">
+                <button type="button" class="remove-file" onclick="window.removeCoverPhoto()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            coverPhotoPreview.appendChild(preview);
+        }
+        
+        /**
+         * Display additional photos preview
+         */
+        function displayAdditionalPhotosPreview() {
+            additionalPhotosPreview.innerHTML = '';
+            
+            additionalPhotos.forEach((photo, index) => {
                 const preview = document.createElement('div');
                 preview.className = 'file-preview';
                 preview.innerHTML = `
-                    <img src="${coverPhoto.dataUrl}" alt="Cover photo preview">
-                    <button type="button" class="remove-file" onclick="window.removeCoverPhoto()">
+                    <img src="${photo.dataUrl}" alt="Photo ${index + 1}">
+                    <button type="button" class="remove-file" onclick="window.removeAdditionalPhoto(${index})">
                         <i class="fas fa-times"></i>
                     </button>
                 `;
                 
-                coverPhotoPreview.appendChild(preview);
+                additionalPhotosPreview.appendChild(preview);
+            });
+        }
+        
+        /**
+         * Remove cover photo (exposed to window for onclick)
+         */
+        window.removeCoverPhoto = function() {
+            coverPhoto = null;
+            coverPhotoUpload.value = '';
+            coverPhotoPreview.innerHTML = '';
+            clearError('coverPhoto-error');
+        };
+        
+        /**
+         * Remove additional photo (exposed to window for onclick)
+         */
+        window.removeAdditionalPhoto = function(index) {
+            additionalPhotos.splice(index, 1);
+            displayAdditionalPhotosPreview();
+            clearError('additionalPhotos-error');
+        };
+        
+        /**
+         * Handle form submission
+         */
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
             }
             
-            /**
-             * Display additional photos preview
-             */
-            function displayAdditionalPhotosPreview() {
-                additionalPhotosPreview.innerHTML = '';
-                
-                additionalPhotos.forEach((photo, index) => {
-                    const preview = document.createElement('div');
-                    preview.className = 'file-preview';
-                    preview.innerHTML = `
-                        <img src="${photo.dataUrl}" alt="Photo ${index + 1}">
-                        <button type="button" class="remove-file" onclick="window.removeAdditionalPhoto(${index})">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    `;
-                    
-                    additionalPhotosPreview.appendChild(preview);
-                });
-            }
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Listing Business...';
             
-            /**
-             * Remove cover photo (exposed to window for onclick)
-             */
-            window.removeCoverPhoto = function() {
-                coverPhoto = null;
-                coverPhotoUpload.value = '';
-                coverPhotoPreview.innerHTML = '';
-                clearError('coverPhoto-error');
-            };
-            
-            /**
-             * Remove additional photo (exposed to window for onclick)
-             */
-            window.removeAdditionalPhoto = function(index) {
-                additionalPhotos.splice(index, 1);
-                displayAdditionalPhotosPreview();
-                clearError('additionalPhotos-error');
-            };
-            
-            /**
-             * Upload image to Firebase Storage
-             */
-            async function uploadImageToFirebase(file, folder = 'business_images') {
-                try {
-                    // Create a unique filename
-                    const timestamp = Date.now();
-                    const randomString = Math.random().toString(36).substring(2, 15);
-                    const fileName = `${folder}/${timestamp}_${randomString}_${file.name}`;
-                    
-                    // Create storage reference
-                    const storageRef = storage.ref().child(fileName);
-                    
-                    // Upload file
-                    const snapshot = await storageRef.put(file);
-                    
-                    // Get download URL
-                    const downloadURL = await snapshot.ref.getDownloadURL();
-                    
-                    return downloadURL;
-                } catch (error) {
-                    console.error('Error uploading image:', error);
-                    throw new Error('Failed to upload image');
-                }
-            }
-            
-            /**
-             * Handle form submission
-             */
-            async function handleFormSubmit(e) {
-                e.preventDefault();
+            try {
+                // Create business data object
+                const businessData = {
+                    id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+                    name: businessNameInput.value.trim(),
+                    description: businessDescriptionInput.value.trim(),
+                    category: businessCategorySelect.value,
+                    campus: campusLocationSelect.value,
+                    price: businessPriceInput.value.trim() || null,
+                    location: businessLocationInput.value.trim() || getDefaultLocation(campusLocationSelect.value),
+                    contactLink: contactLinkInput.value.trim(),
+                    phone: phoneNumberInput.value.trim() || null,
+                    email: emailAddressInput.value.trim() || null,
+                    hours: businessHoursInput.value.trim() || null,
+                    contactInfo: contactInfoInput.value.trim() || null,
+                    coverPhoto: coverPhoto ? coverPhoto.dataUrl : null,
+                    additionalPhotos: additionalPhotos.map(photo => photo.dataUrl),
+                    status: 'active',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    views: 0
+                };
                 
-                if (!validateForm()) {
-                    return;
-                }
+                // Save to localStorage
+                saveToLocalStorage(businessData);
                 
-                // Disable submit button
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Listing Business...';
-                
-                try {
-                    // Upload cover photo to Firebase
-                    let coverPhotoUrl = '';
-                    if (coverPhoto) {
-                        coverPhotoUrl = await uploadImageToFirebase(coverPhoto.file, 'cover_photos');
-                    }
-                    
-                    // Upload additional photos to Firebase
-                    const additionalPhotoUrls = [];
-                    for (const photo of additionalPhotos) {
-                        const url = await uploadImageToFirebase(photo.file, 'additional_photos');
-                        additionalPhotoUrls.push(url);
-                    }
-                    
-                    // Create business data object for Firestore
-                    const businessData = {
-                        name: businessNameInput.value.trim(),
-                        description: businessDescriptionInput.value.trim(),
-                        category: businessCategorySelect.value,
-                        campus: campusLocationSelect.value,
-                        price: businessPriceInput.value.trim() || null,
-                        contactLink: contactLinkInput.value.trim(),
-                        phone: phoneNumberInput.value.trim() || null,
-                        email: emailAddressInput.value.trim() || null,
-                        hours: businessHoursInput.value.trim() || null,
-                        contactInfo: contactInfoInput.value.trim() || null,
-                        coverPhoto: coverPhotoUrl,
-                        additionalPhotos: additionalPhotoUrls,
-                        status: 'active',
-                        createdAt: new Date().toISOString(),
-                        updatedAt: new Date().toISOString(),
-                        views: 0,
-                        userId: auth.currentUser ? auth.currentUser.uid : 'anonymous'
-                    };
-                    
-                    // Save to Firestore
-                    const docRef = await db.collection('products').add(businessData);
-                    
-                    console.log('Business saved to Firestore with ID:', docRef.id);
-                    
-                    // Also save to localStorage for offline access
-                    saveToLocalStorage(businessData, docRef.id);
-                    
-                    // Show success message
-                    setTimeout(() => {
-                        successModal.classList.add('active');
-                        document.body.style.overflow = 'hidden';
-                    }, 500);
-                    
-                } catch (error) {
-                    console.error('Error saving business:', error);
-                    showError('submitBtn', 'An error occurred. Please try again.');
+                // Show success message
+                setTimeout(() => {
+                    successModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> List My Business on U-Mall';
-                }
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error saving business:', error);
+                showError('submitBtn', 'An error occurred. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> List My Business on U-Mall';
+            }
+        }
+        
+        /**
+         * Get default location based on campus
+         */
+        function getDefaultLocation(campus) {
+            const locations = {
+                'uli': 'ULI Campus',
+                'awka': 'Awka Campus', 
+                'igbariam': 'Igbariam Campus',
+                'online': 'Online Services'
+            };
+            return locations[campus] || 'Campus Location';
+        }
+        
+        /**
+         * Save to localStorage
+         */
+        function saveToLocalStorage(businessData) {
+            try {
+                // Get existing listings or initialize empty array
+                const existingListings = JSON.parse(localStorage.getItem(APP_CONFIG.localStorageKey) || '[]');
+                
+                // Add new listing to the beginning
+                existingListings.unshift(businessData);
+                
+                // Save back to localStorage
+                localStorage.setItem(APP_CONFIG.localStorageKey, JSON.stringify(existingListings));
+                
+                console.log('Business saved to localStorage:', businessData);
+                console.log('Total listings in storage:', existingListings.length);
+                
+                // Trigger storage event for homepage to reload
+                window.dispatchEvent(new Event('storage'));
+                
+                // Also dispatch a custom event for same-page updates
+                window.dispatchEvent(new CustomEvent('newListingAdded', { detail: businessData }));
+                
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+                throw new Error('Failed to save business listing');
+            }
+        }
+        
+        /**
+         * Reset form after successful submission
+         */
+        function resetForm() {
+            listingForm.reset();
+            updateCharCount();
+            
+            // Reset photo previews
+            coverPhoto = null;
+            additionalPhotos = [];
+            coverPhotoPreview.innerHTML = '';
+            additionalPhotosPreview.innerHTML = '';
+            coverPhotoUpload.value = '';
+            additionalPhotosUpload.value = '';
+            
+            // Clear all errors
+            clearAllErrors();
+            
+            // Focus on first field
+            businessNameInput.focus();
+        }
+        
+        /**
+         * Validate the form
+         */
+        function validateForm() {
+            let isValid = true;
+            
+            // Clear all errors
+            clearAllErrors();
+            
+            // Validate required fields
+            if (!businessNameInput.value.trim()) {
+                showError('businessName-error', 'Business name is required');
+                isValid = false;
+            } else if (businessNameInput.value.trim().length < 3) {
+                showError('businessName-error', 'Business name must be at least 3 characters');
+                isValid = false;
+            } else if (businessNameInput.value.trim().length > 100) {
+                showError('businessName-error', 'Business name must be less than 100 characters');
+                isValid = false;
             }
             
-            /**
-             * Save to localStorage as backup
-             */
-            function saveToLocalStorage(businessData, firebaseId) {
-                try {
-                    // Get existing listings or initialize empty array
-                    const listings = JSON.parse(localStorage.getItem('marketplaceListings') || '[]');
-                    
-                    // Add new listing with Firebase ID
-                    const newListing = {
-                        ...businessData,
-                        id: firebaseId,
-                        localBackup: true
-                    };
-                    
-                    // Add to beginning of array
-                    listings.unshift(newListing);
-                    
-                    // Save back to localStorage
-                    localStorage.setItem('marketplaceListings', JSON.stringify(listings));
-                    
-                    console.log('Backup saved to localStorage:', newListing);
-                    
-                } catch (error) {
-                    console.error('Error saving to localStorage:', error);
-                }
+            if (!businessDescriptionInput.value.trim()) {
+                showError('businessDescription-error', 'Business description is required');
+                isValid = false;
+            } else if (businessDescriptionInput.value.trim().length < 20) {
+                showError('businessDescription-error', 'Description must be at least 20 characters');
+                isValid = false;
+            } else if (businessDescriptionInput.value.trim().length > 500) {
+                showError('businessDescription-error', 'Description must be less than 500 characters');
+                isValid = false;
             }
             
-            /**
-             * Validate the form
-             */
-            function validateForm() {
-                let isValid = true;
-                
-                // Clear all errors
-                clearAllErrors();
-                
-                // Validate required fields
-                if (!businessNameInput.value.trim()) {
-                    showError('businessName-error', 'Business name is required');
-                    isValid = false;
-                } else if (businessNameInput.value.trim().length < 3) {
-                    showError('businessName-error', 'Business name must be at least 3 characters');
-                    isValid = false;
-                }
-                
-                if (!businessDescriptionInput.value.trim()) {
-                    showError('businessDescription-error', 'Business description is required');
-                    isValid = false;
-                } else if (businessDescriptionInput.value.trim().length < 20) {
-                    showError('businessDescription-error', 'Description must be at least 20 characters');
-                    isValid = false;
-                } else if (businessDescriptionInput.value.trim().length > 500) {
-                    showError('businessDescription-error', 'Description must be less than 500 characters');
-                    isValid = false;
-                }
-                
-                if (!businessCategorySelect.value) {
-                    showError('businessCategory-error', 'Please select a category');
-                    isValid = false;
-                }
-                
-                if (!campusLocationSelect.value) {
-                    showError('campusLocation-error', 'Please select a campus location');
-                    isValid = false;
-                }
-                
-                if (!contactLinkInput.value.trim()) {
-                    showError('contactLink-error', 'Contact link is required');
-                    isValid = false;
-                } else if (!isValidUrl(contactLinkInput.value.trim())) {
-                    showError('contactLink-error', 'Please enter a valid URL (https://...)');
-                    isValid = false;
-                }
-                
-                if (!coverPhoto) {
-                    showError('coverPhoto-error', 'Cover photo is required');
-                    isValid = false;
-                }
-                
-                if (!termsCheckbox.checked) {
-                    showError('terms-error', 'You must agree to the terms and conditions');
-                    isValid = false;
-                }
-                
-                // Validate email if provided
-                if (emailAddressInput.value.trim() && !isValidEmail(emailAddressInput.value.trim())) {
-                    showError('emailAddress-error', 'Please enter a valid email address');
-                    isValid = false;
-                }
-                
-                // Validate phone if provided
-                if (phoneNumberInput.value.trim() && !isValidPhone(phoneNumberInput.value.trim())) {
-                    showError('phoneNumber-error', 'Please enter a valid phone number (10+ digits)');
-                    isValid = false;
-                }
-                
-                // Update submit button state
-                submitBtn.disabled = !isValid;
-                
-                return isValid;
+            if (!businessCategorySelect.value) {
+                showError('businessCategory-error', 'Please select a category');
+                isValid = false;
             }
             
-            /**
-             * Validate URL
-             */
-            function isValidUrl(string) {
-                try {
-                    const url = new URL(string);
-                    return url.protocol === 'http:' || url.protocol === 'https:';
-                } catch (_) {
-                    return false;
-                }
+            if (!campusLocationSelect.value) {
+                showError('campusLocation-error', 'Please select a campus location');
+                isValid = false;
             }
             
-            /**
-             * Validate email
-             */
-            function isValidEmail(email) {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(email);
+            if (!contactLinkInput.value.trim()) {
+                showError('contactLink-error', 'Contact link is required');
+                isValid = false;
+            } else if (!isValidUrl(contactLinkInput.value.trim())) {
+                showError('contactLink-error', 'Please enter a valid URL (https://...)');
+                isValid = false;
             }
             
-            /**
-             * Validate phone number
-             */
-            function isValidPhone(phone) {
-                // Remove all non-digits
-                const digits = phone.replace(/\D/g, '');
-                return digits.length >= 10;
+            // Cover photo is required
+            if (!coverPhoto) {
+                showError('coverPhoto-error', 'Cover photo is required');
+                isValid = false;
             }
             
-            /**
-             * Show error message
-             */
-            function showError(elementId, message) {
-                const element = document.getElementById(elementId);
-                if (element) {
-                    element.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
-                    element.style.display = 'block';
-                }
+            if (!termsCheckbox.checked) {
+                showError('terms-error', 'You must agree to the terms and conditions');
+                isValid = false;
             }
             
-            /**
-             * Clear error message
-             */
-            function clearError(elementId) {
-                const element = document.getElementById(elementId);
-                if (element) {
-                    element.innerHTML = '';
-                    element.style.display = 'none';
-                }
+            // Validate email if provided
+            if (emailAddressInput.value.trim() && !isValidEmail(emailAddressInput.value.trim())) {
+                showError('emailAddress-error', 'Please enter a valid email address');
+                isValid = false;
             }
             
-            /**
-             * Clear all errors
-             */
-            function clearAllErrors() {
-                const errorElements = document.querySelectorAll('.error-message');
-                errorElements.forEach(element => {
-                    element.innerHTML = '';
-                    element.style.display = 'none';
-                });
+            // Validate phone if provided
+            if (phoneNumberInput.value.trim() && !isValidPhone(phoneNumberInput.value.trim())) {
+                showError('phoneNumber-error', 'Please enter a valid phone number (10+ digits)');
+                isValid = false;
             }
             
-            // Initialize the page
-            init();
+            // Update submit button state
+            submitBtn.disabled = !isValid;
             
-            // Add success modal event listeners
-            successModal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.classList.remove('active');
-                    document.body.style.overflow = 'auto';
-                }
+            return isValid;
+        }
+        
+        /**
+         * Validate URL
+         */
+        function isValidUrl(string) {
+            try {
+                const url = new URL(string);
+                return url.protocol === 'http:' || url.protocol === 'https:';
+            } catch (_) {
+                return false;
+            }
+        }
+        
+        /**
+         * Validate email
+         */
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        /**
+         * Validate phone number
+         */
+        function isValidPhone(phone) {
+            // Remove all non-digits
+            const digits = phone.replace(/\D/g, '');
+            return digits.length >= 10;
+        }
+        
+        /**
+         * Show error message
+         */
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+                element.style.display = 'block';
+            }
+        }
+        
+        /**
+         * Clear error message
+         */
+        function clearError(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = '';
+                element.style.display = 'none';
+            }
+        }
+        
+        /**
+         * Clear all errors
+         */
+        function clearAllErrors() {
+            const errorElements = document.querySelectorAll('.error-message');
+            errorElements.forEach(element => {
+                element.innerHTML = '';
+                element.style.display = 'none';
             });
-            
-            // Add escape key to close modal
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && successModal.classList.contains('active')) {
-                    successModal.classList.remove('active');
-                    document.body.style.overflow = 'auto';
-                }
-            });
+        }
+        
+        // Initialize the page
+        init();
+        
+        // Add success modal event listeners
+        successModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
         });
-    </script>
+        
+        // Add escape key to close modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && successModal.classList.contains('active')) {
+                successModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    });
+</script>
 </body>
 </html>

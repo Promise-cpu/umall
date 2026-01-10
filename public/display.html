@@ -3,155 +3,1086 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Details - Cell Noun</title>
-    <link rel="stylesheet" href="CSS/display.css">
-    <link rel="stylesheet" href="CSS/header-component.css">
+    <title>Business Details - U-Mall Marketplace</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        /* Back Navigation */
+        .back-nav {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .back-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            border-color: white;
+        }
+
+        .back-btn i {
+            font-size: 1.1rem;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: #3498db;
+        }
+
+        /* Loading State */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .loading-spinner {
+            text-align: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .error-container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 40px;
+            text-align: center;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+
+        .error-container h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+
+        .error-container p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Main Content Container */
+        .content-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Business Details Card */
+        .business-details-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+            padding: 40px;
+            color: white;
+        }
+
+        .business-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .business-title-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .business-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .business-category {
+            display: inline-block;
+            background: rgba(52, 152, 219, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .business-campus {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .business-campus i {
+            color: #3498db;
+        }
+
+        /* Price Badge */
+        .price-badge {
+            background: rgba(39, 174, 96, 0.95);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            min-width: 150px;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        /* Details Grid */
+        .details-grid {
+            padding: 40px;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #f0f2f5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #3498db;
+        }
+
+        /* Info Grid Layout */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border-color: #3498db;
+        }
+
+        .info-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .info-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .info-content {
+            color: #333;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .info-content a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .info-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Description Section */
+        .description-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 2px solid #e9ecef;
+        }
+
+        .description-content {
+            color: #333;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            white-space: pre-line;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            margin-bottom: 40px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Contact Actions */
+        .contact-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid #f0f2f5;
+        }
+
+        .contact-btn {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 18px 30px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn.whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+        }
+
+        .contact-btn.telegram {
+            background: linear-gradient(135deg, #0088cc, #006699);
+            color: white;
+        }
+
+        .contact-btn.email {
+            background: linear-gradient(135deg, #EA4335, #D14836);
+            color: white;
+        }
+
+        .contact-btn.phone {
+            background: linear-gradient(135deg, #34A853, #2E8B57);
+            color: white;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Business Info Footer */
+        .business-footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .business-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .business-date {
+            text-align: right;
+        }
+
+        .date-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .date-value {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* No Data Placeholder */
+        .no-data {
+            color: #95a5a6;
+            font-style: italic;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #dee2e6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-section {
+                height: 300px;
+            }
+            
+            .business-name {
+                font-size: 2rem;
+            }
+            
+            .price-badge {
+                font-size: 1.2rem;
+                min-width: 120px;
+                padding: 10px 20px;
+            }
+            
+            .details-grid {
+                padding: 25px;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .contact-btn {
+                min-width: 100%;
+            }
+            
+            .business-footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .business-stats {
+                justify-content: center;
+            }
+            
+            .business-date {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section {
+                height: 250px;
+            }
+            
+            .business-name {
+                font-size: 1.7rem;
+            }
+            
+            .hero-overlay {
+                padding: 20px;
+            }
+            
+            .back-btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .logo {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .back-nav {
+                display: none;
+            }
+            
+            .contact-actions {
+                display: none;
+            }
+            
+            .business-details-card {
+                box-shadow: none;
+                margin: 0;
+            }
+            
+            body {
+                background: white;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Main container -->
-    <div class="container">
-        
-        <!-- Header will be loaded dynamically -->
-        <header class="header" id="main-header">
-            <!-- Header will be inserted here by JavaScript -->
-        </header>
-        
-        <!-- Back button -->
+    <!-- Back Navigation -->
+    <nav class="back-nav">
         <div class="back-container">
-            <a href="index.html" class="back-button">
-                <i class="fas fa-arrow-left"></i> Back to Marketplace
+            <a href="index.html" class="logo">
+                <i class="fas fa-store-alt"></i>
+                U-Mall Marketplace
+            </a>
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Marketplace
             </a>
         </div>
-        
-        <!-- Main content -->
-        <main class="business-details">
-            <div class="content-wrapper">
-                
-                <!-- Business header -->
-                <div class="business-header">
-                    <div class="business-image-large">
-                        <div class="image-placeholder-large">
-                            <i class="fas fa-store"></i>
-                        </div>
-                        <div class="campus-badge-large">
-                            <i class="fas fa-map-marker-alt"></i> <span id="campus-name">ULI CAMPUS</span>
-                        </div>
-                    </div>
-                    
-                    <div class="business-overview">
-                        <h1 class="business-title" id="business-name">Tech Gadgets Hub</h1>
-                        
-                        <div class="business-tags" id="business-tags">
-                            <span class="tag">Electronics</span>
-                            <span class="tag">Gadgets</span>
-                            <span class="tag">Repairs</span>
-                            <span class="tag">Student Discount</span>
-                        </div>
-                        
-                        <div class="contact-info">
-                            <div class="contact-item">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <div>
-                                    <strong>Location</strong>
-                                    <p id="business-location">Block A, Room 12, Main Building, ULI Campus</p>
-                                </div>
-                            </div>
-                            
-                            <div class="contact-item">
-                                <i class="fas fa-clock"></i>
-                                <div>
-                                    <strong>Business Hours</strong>
-                                    <p id="business-hours">Monday - Friday: 8:00 AM - 6:00 PM</p>
-                                </div>
-                            </div>
-                            
-                            <div class="contact-item">
-                                <i class="fas fa-phone"></i>
-                                <div>
-                                    <strong>Contact</strong>
-                                    <p id="business-contact">+234 812 345 6789</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <a href="#" class="btn-primary" id="contact-btn">
-                                <i class="fas fa-phone"></i> Contact
-                            </a>
-                            <button class="btn-outline">
-                                <i class="fas fa-share-alt"></i> Share
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Business details sections -->
-                <div class="details-grid">
-                    <!-- About section -->
-                    <section class="detail-section about-section">
-                        <h2><i class="fas fa-info-circle"></i> About This Business</h2>
-                        <p id="business-description">Tech Gadgets Hub is your one-stop shop for all electronic needs on campus. We specialize in providing quality gadgets, accessories, and repair services at student-friendly prices.</p>
-                        
-                        <div class="features-list">
-                            <h3>What We Offer:</h3>
-                            <ul id="business-features">
-                                <li><i class="fas fa-check"></i> Phone and laptop repairs</li>
-                                <li><i class="fas fa-check"></i> Quality headphones and speakers</li>
-                                <li><i class="fas fa-check"></i> Chargers and power banks</li>
-                                <li><i class="fas fa-check"></i> Study lamps and desk accessories</li>
-                                <li><i class="fas fa-check"></i> Student discount available</li>
-                                <li><i class="fas fa-check"></i> Warranty on all products</li>
-                            </ul>
-                        </div>
-                    </section>
-                    
-                    <!-- Gallery section -->
-                    <section class="detail-section gallery-section">
-                        <h2><i class="fas fa-images"></i> Gallery</h2>
-                        
-                        <div class="gallery-grid" id="business-gallery">
-                            <!-- Images will be dynamically loaded here -->
-                            <div class="gallery-item">
-                                <div class="image-placeholder">
-                                    <i class="fas fa-image"></i>
-                                    <span>Business Image 1</span>
-                                </div>
-                            </div>
-                            <div class="gallery-item">
-                                <div class="image-placeholder">
-                                    <i class="fas fa-image"></i>
-                                    <span>Business Image 2</span>
-                                </div>
-                            </div>
-                            <div class="gallery-item">
-                                <div class="image-placeholder">
-                                    <i class="fas fa-image"></i>
-                                    <span>Business Image 3</span>
-                                </div>
-                            </div>
-                            <div class="gallery-item">
-                                <div class="image-placeholder">
-                                    <i class="fas fa-image"></i>
-                                    <span>Business Image 4</span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </main>
-        
-        <!-- Footer -->
-        <footer class="footer">
-            <p>U-MALL Marketplace &copy; 2025 | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-        </footer>
+    </nav>
+
+    <!-- Loading State -->
+    <div id="loading" class="loading-container">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p style="color: #2c3e50; font-size: 1.1rem;">Loading business details...</p>
+        </div>
     </div>
 
-    <!-- JavaScript -->
-    <script src="JS/display.js"></script>
+    <!-- Error State (Hidden by default) -->
+    <div id="error" class="error-container" style="display: none;">
+        <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h2>Business Not Found</h2>
+        <p>The business you're looking for doesn't exist or has been removed.</p>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Return to Marketplace
+        </a>
+    </div>
+
+    <!-- Main Content (Hidden by default) -->
+    <div id="content" class="content-container" style="display: none;">
+        <!-- Business Details Card will be inserted here -->
+    </div>
+
+    <script>
+        // Business Details Page JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const contentEl = document.getElementById('content');
+            
+            // Get business ID from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const businessId = urlParams.get('id');
+            
+            /**
+             * Initialize the page
+             */
+            async function init() {
+                console.log('Business details page initialized');
+                
+                if (!businessId) {
+                    showError();
+                    return;
+                }
+                
+                await loadBusinessDetails(businessId);
+            }
+            
+            /**
+             * Load business details from localStorage
+             */
+            async function loadBusinessDetails(id) {
+                try {
+                    // Simulate loading delay for better UX
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    // Get all listings from localStorage
+                    const listings = JSON.parse(localStorage.getItem('marketplaceListings') || '[]');
+                    
+                    // Find the business by ID
+                    const business = listings.find(item => item.id === id);
+                    
+                    if (!business) {
+                        throw new Error('Business not found');
+                    }
+                    
+                    // Render business details
+                    renderBusinessDetails(business);
+                    
+                    // Show content, hide loading
+                    loadingEl.style.display = 'none';
+                    contentEl.style.display = 'block';
+                    
+                    // Update view count
+                    updateViewCount(id);
+                    
+                } catch (error) {
+                    console.error('Error loading business details:', error);
+                    showError();
+                }
+            }
+            
+            /**
+             * Update view count for the business
+             */
+            function updateViewCount(id) {
+                try {
+                    const listings = JSON.parse(localStorage.getItem('marketplaceListings') || '[]');
+                    const index = listings.findIndex(item => item.id === id);
+                    
+                    if (index !== -1) {
+                        listings[index].views = (listings[index].views || 0) + 1;
+                        listings[index].updatedAt = new Date().toISOString();
+                        localStorage.setItem('marketplaceListings', JSON.stringify(listings));
+                    }
+                } catch (error) {
+                    console.error('Error updating view count:', error);
+                }
+            }
+            
+            /**
+             * Render business details to the page
+             */
+            function renderBusinessDetails(business) {
+                const template = createBusinessDetailsTemplate(business);
+                contentEl.innerHTML = template;
+                
+                // Setup gallery click events
+                setupGalleryEvents(business);
+            }
+            
+            /**
+             * Create business details HTML template
+             */
+            function createBusinessDetailsTemplate(business) {
+                // Format dates
+                const createdDate = formatDate(business.createdAt);
+                const updatedDate = formatDate(business.updatedAt);
+                
+                // Determine primary contact method
+                const contactLink = business.contactLink || '';
+                const contactMethod = detectContactMethod(contactLink);
+                
+                return `
+                    <div class="business-details-card">
+                        <!-- Hero Section with Cover Photo -->
+                        <div class="hero-section">
+                            ${business.coverPhoto 
+                                ? `<img src="${business.coverPhoto}" alt="${business.name}" class="hero-image">`
+                                : `<div class="hero-image" style="background: linear-gradient(135deg, #3498db, #2c3e50); display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-store-alt" style="font-size: 8rem; color: white; opacity: 0.5;"></i>
+                                </div>`
+                            }
+                            <div class="hero-overlay">
+                                <div class="business-header">
+                                    <div class="business-title-section">
+                                        <h1 class="business-name">${business.name}</h1>
+                                        <div class="business-category">${business.category}</div>
+                                        <div class="business-campus">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            ${getCampusDisplayName(business.campus)}
+                                        </div>
+                                    </div>
+                                    ${business.price ? `
+                                        <div class="price-badge">
+                                            ${formatPrice(business.price)}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Details Grid -->
+                        <div class="details-grid">
+                            <!-- Contact Information -->
+                            <h2 class="section-title">
+                                <i class="fas fa-address-book"></i>
+                                Contact Information
+                            </h2>
+                            
+                            <div class="info-grid">
+                                <!-- Contact Link -->
+                                ${business.contactLink ? `
+                                    <div class="info-card">
+                                        <div class="info-header">
+                                            <div class="info-icon">
+                                                <i class="fas fa-link"></i>
+                                            </div>
+                                            <h3 class="info-title">Contact Link</h3>
+                                        </div>
+                                        <div class="info-content">
+                                            <a href="${business.contactLink}" target="_blank" rel="noopener noreferrer">
+                                                ${formatContactLink(business.contactLink)}
+                                            </a>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                                
+                                <!-- Phone -->
+                                ${business.phone ? `
+                                    <div class="info-card">
+                                        <div class="info-header">
+                                            <div class="info-icon">
+                                                <i class="fas fa-phone"></i>
+                                            </div>
+                                            <h3 class="info-title">Phone Number</h3>
+                                        </div>
+                                        <div class="info-content">
+                                            <a href="tel:${business.phone}">
+                                                ${business.phone}
+                                            </a>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                                
+                                <!-- Email -->
+                                ${business.email ? `
+                                    <div class="info-card">
+                                        <div class="info-header">
+                                            <div class="info-icon">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                            <h3 class="info-title">Email Address</h3>
+                                        </div>
+                                        <div class="info-content">
+                                            <a href="mailto:${business.email}">
+                                                ${business.email}
+                                            </a>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                                
+                                <!-- Location -->
+                                ${business.location ? `
+                                    <div class="info-card">
+                                        <div class="info-header">
+                                            <div class="info-icon">
+                                                <i class="fas fa-map-pin"></i>
+                                            </div>
+                                            <h3 class="info-title">Location</h3>
+                                        </div>
+                                        <div class="info-content">
+                                            ${business.location}
+                                        </div>
+                                    </div>
+                                ` : ''}
+                                
+                                <!-- Business Hours -->
+                                ${business.hours ? `
+                                    <div class="info-card">
+                                        <div class="info-header">
+                                            <div class="info-icon">
+                                                <i class="fas fa-clock"></i>
+                                            </div>
+                                            <h3 class="info-title">Business Hours</h3>
+                                        </div>
+                                        <div class="info-content">
+                                            ${business.hours}
+                                        </div>
+                                    </div>
+                                ` : ''}
+                                
+                                <!-- Contact Person -->
+                                ${business.contactInfo ? `
+                                    <div class="info-card">
+                                        <div class="info-header">
+                                            <div class="info-icon">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <h3 class="info-title">Contact Person</h3>
+                                        </div>
+                                        <div class="info-content">
+                                            ${business.contactInfo}
+                                        </div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            
+                            <!-- Description Section -->
+                            <h2 class="section-title">
+                                <i class="fas fa-align-left"></i>
+                                Business Description
+                            </h2>
+                            
+                            <div class="description-section">
+                                <div class="description-content">
+                                    ${business.description || '<p class="no-data">No description provided</p>'}
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Photos Gallery -->
+                            ${business.additionalPhotos && business.additionalPhotos.length > 0 ? `
+                                <h2 class="section-title">
+                                    <i class="fas fa-images"></i>
+                                    Gallery
+                                </h2>
+                                
+                                <div class="gallery-section">
+                                    <div class="gallery-grid" id="galleryGrid">
+                                        ${business.additionalPhotos.map((photo, index) => `
+                                            <div class="gallery-item" data-index="${index}">
+                                                <img src="${photo}" alt="Gallery image ${index + 1}">
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            <!-- Contact Actions -->
+                            <div class="contact-actions">
+                                ${createContactButtons(business)}
+                            </div>
+                        </div>
+                        
+                        <!-- Business Footer -->
+                        <div class="business-footer">
+                            <div class="business-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">${business.views || 0}</div>
+                                    <div class="stat-label">Views</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">${business.status || 'Active'}</div>
+                                    <div class="stat-label">Status</div>
+                                </div>
+                            </div>
+                            <div class="business-date">
+                                <div class="date-label">Listed on</div>
+                                <div class="date-value">${createdDate}</div>
+                                ${updatedDate !== createdDate ? `
+                                    <div class="date-label" style="margin-top: 10px;">Last updated</div>
+                                    <div class="date-value">${updatedDate}</div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            /**
+             * Create contact buttons based on available contact methods
+             */
+            function createContactButtons(business) {
+                const buttons = [];
+                
+                // Check for contact link
+                if (business.contactLink) {
+                    const method = detectContactMethod(business.contactLink);
+                    if (method === 'whatsapp') {
+                        buttons.push(`
+                            <a href="${business.contactLink}" target="_blank" rel="noopener noreferrer" class="contact-btn whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                                Contact via WhatsApp
+                            </a>
+                        `);
+                    } else if (method === 'telegram') {
+                        buttons.push(`
+                            <a href="${business.contactLink}" target="_blank" rel="noopener noreferrer" class="contact-btn telegram">
+                                <i class="fab fa-telegram"></i>
+                                Contact via Telegram
+                            </a>
+                        `);
+                    } else {
+                        buttons.push(`
+                            <a href="${business.contactLink}" target="_blank" rel="noopener noreferrer" class="contact-btn">
+                                <i class="fas fa-external-link-alt"></i>
+                                Visit Contact Link
+                            </a>
+                        `);
+                    }
+                }
+                
+                // Check for phone
+                if (business.phone) {
+                    buttons.push(`
+                        <a href="tel:${business.phone}" class="contact-btn phone">
+                            <i class="fas fa-phone"></i>
+                            Call Now
+                        </a>
+                    `);
+                }
+                
+                // Check for email
+                if (business.email) {
+                    buttons.push(`
+                        <a href="mailto:${business.email}" class="contact-btn email">
+                            <i class="fas fa-envelope"></i>
+                            Send Email
+                        </a>
+                    `);
+                }
+                
+                return buttons.join('');
+            }
+            
+            /**
+             * Setup gallery image click events
+             */
+            function setupGalleryEvents(business) {
+                const galleryItems = document.querySelectorAll('.gallery-item');
+                
+                galleryItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const index = this.getAttribute('data-index');
+                        const imageUrl = business.additionalPhotos[index];
+                        
+                        // Open image in lightbox (simplified for now)
+                        window.open(imageUrl, '_blank');
+                    });
+                });
+            }
+            
+            /**
+             * Show error state
+             */
+            function showError() {
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+            }
+            
+            /**
+             * Format price for display
+             */
+            function formatPrice(price) {
+                if (!price) return '';
+                if (price.startsWith('₦')) return price;
+                
+                const numericPrice = price.replace(/[^\d.]/g, '');
+                const num = parseFloat(numericPrice);
+                if (isNaN(num)) return price;
+                
+                return `₦${num.toLocaleString()}`;
+            }
+            
+            /**
+             * Format contact link for display
+             */
+            function formatContactLink(link) {
+                if (link.length > 50) {
+                    return link.substring(0, 47) + '...';
+                }
+                return link;
+            }
+            
+            /**
+             * Detect contact method from URL
+             */
+            function detectContactMethod(url) {
+                if (url.includes('whatsapp.com') || url.includes('wa.me')) {
+                    return 'whatsapp';
+                } else if (url.includes('t.me') || url.includes('telegram.me')) {
+                    return 'telegram';
+                }
+                return 'other';
+            }
+            
+            /**
+             * Get campus display name
+             */
+            function getCampusDisplayName(campus) {
+                const campusNames = {
+                    'uli': 'ULI Campus',
+                    'awka': 'Awka Campus',
+                    'igbariam': 'Igbariam Campus',
+                    'online': 'Online Services'
+                };
+                return campusNames[campus] || campus;
+            }
+            
+            /**
+             * Format date for display
+             */
+            function formatDate(dateString) {
+                try {
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                } catch (error) {
+                    return 'Unknown date';
+                }
+            }
+            
+            // Initialize the page
+            init();
+        });
+    </script>
 </body>
 </html>
